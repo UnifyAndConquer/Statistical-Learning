@@ -1,0 +1,15 @@
+surv m class age sex
+20 23 crew adult female
+192 862 crew adult male
+1 1 first child female
+5 5 first child male
+140 144 first adult female
+57 175 first adult male
+13 13 second child female
+11 11 second child male
+80 93 second adult female
+14 168 second adult male
+14 31 third child female
+13 48 third child male
+76 165 third adult female
+75 462 third adult male

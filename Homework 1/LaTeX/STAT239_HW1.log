@@ -1,0 +1,392 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.1)  15 MAR 2018 04:09
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**STAT239_HW1.tex
+(./STAT239_HW1.tex
+LaTeX2e <2017-04-15>
+Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 99.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2017/01/12 v0.06k Graphics/color for pdfTeX
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2016/05/22 v1.1-161 Sub-captions (AR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2016/02/21 v3.3-144 Customizing captions (AR)
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2016/05/22 v1.7-166 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 67.
+\captionmargin=\dimen105
+\captionmargin@=\dimen106
+\captionwidth=\dimen107
+\caption@tempdima=\dimen108
+\caption@indent=\dimen109
+\caption@parindent=\dimen110
+\caption@hangindent=\dimen111
+)
+\c@ContinuedFloat=\count88
+)
+\c@subfigure=\count89
+\c@subtable=\count90
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count91
+\Gm@cntv=\count92
+\c@Gm@tempcnt=\count93
+\Gm@bindingoffset=\dimen112
+\Gm@wd@mp=\dimen113
+\Gm@odd@mp=\dimen114
+\Gm@even@mp=\dimen115
+\Gm@layoutwidth=\dimen116
+\Gm@layoutheight=\dimen117
+\Gm@layouthoffset=\dimen118
+\Gm@layoutvoffset=\dimen119
+\Gm@dimlist=\toks15
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/indentfirst.sty
+Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count94
+\lst@gtempboxa=\box26
+\lst@token=\toks16
+\lst@length=\count95
+\lst@currlwidth=\dimen120
+\lst@column=\count96
+\lst@pos=\count97
+\lst@lostspace=\dimen121
+\lst@width=\dimen122
+\lst@newlines=\count98
+\lst@lineno=\count99
+\lst@maxwidth=\dimen123
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+\c@lstnumber=\count100
+\lst@skipnumbers=\count101
+\lst@framebox=\box27
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2015/06/04 1.6 listings configuration
+))
+Package: listings 2015/06/04 1.6 (Carsten Heinz)
+
+(./STAT239_HW1.aux)
+\openout1 = `STAT239_HW1.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+
+(/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count102
+\scratchdimen=\dimen124
+\scratchbox=\box28
+\nofMPsegments=\count103
+\nofMParguments=\count104
+\everyMPshowfont=\toks17
+\MPscratchCnt=\count105
+\MPscratchDim=\dimen125
+\MPnumerator=\count106
+\makeMPintoPDFobject=\count107
+\everyMPtoPDFconversion=\toks18
+) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+38.
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: listings package is loaded.
+Package caption Info: End \AtBeginDocument code.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+\c@lstlisting=\count108
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 16.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 16.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 16.
+<Part1_summary_model1.png, id=1, 526.96875pt x 411.5375pt>
+File: Part1_summary_model1.png Graphic file (type png)
+
+<use Part1_summary_model1.png>
+Package pdftex.def Info: Part1_summary_model1.png used on input line 30.
+(pdftex.def)             Requested size: 312.9803pt x 244.43143pt.
+
+<Part1_Pairs_Original.png, id=3, 1445.4pt x 903.375pt>
+File: Part1_Pairs_Original.png Graphic file (type png)
+
+<use Part1_Pairs_Original.png>
+Package pdftex.def Info: Part1_Pairs_Original.png used on input line 40.
+(pdftex.def)             Requested size: 455.24408pt x 284.52328pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Part1_residuals.png, id=4, 1445.4pt x 903.375pt>
+File: Part1_residuals.png Graphic file (type png)
+ <use Part1_residuals.png>
+Package pdftex.def Info: Part1_residuals.png used on input line 47.
+(pdftex.def)             Requested size: 455.24408pt x 284.52328pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Part1_influenceplot.png, id=5, 1445.4pt x 903.375pt>
+File: Part1_influenceplot.png Graphic file (type png)
+
+<use Part1_influenceplot.png>
+Package pdftex.def Info: Part1_influenceplot.png used on input line 54.
+(pdftex.def)             Requested size: 398.33858pt x 248.9596pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[1
+
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./Part1
+_summary_model1.png>]
+
+LaTeX Warning: Text page 2 contains only floats.
+
+[2 <./Part1_Pairs_Original.png> <./Part1_residuals.png>]
+<Part1_Pairs_Transformed.png, id=22, 1445.4pt x 903.375pt>
+File: Part1_Pairs_Transformed.png Graphic file (type png)
+
+<use Part1_Pairs_Transformed.png>
+Package pdftex.def Info: Part1_Pairs_Transformed.png used on input line 65.
+(pdftex.def)             Requested size: 398.33858pt x 248.9596pt.
+
+<Part1_influenceplot_transformed.png, id=23, 1445.4pt x 903.375pt>
+File: Part1_influenceplot_transformed.png Graphic file (type png)
+
+<use Part1_influenceplot_transformed.png>
+Package pdftex.def Info: Part1_influenceplot_transformed.png used on input line
+ 72.
+(pdftex.def)             Requested size: 398.33858pt x 248.9596pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[3 <./Part1_influenceplot.png> <./Part1_Pairs_Transformed.png>] [4 <./Part1_inf
+luenceplot_transformed.png>]
+<Part1_summary_allmodels.png, id=33, 862.22125pt x 683.55376pt>
+File: Part1_summary_allmodels.png Graphic file (type png)
+
+<use Part1_summary_allmodels.png>
+Package pdftex.def Info: Part1_summary_allmodels.png used on input line 92.
+(pdftex.def)             Requested size: 341.43306pt x 270.67352pt.
+
+<Part1_avplots_model3.png, id=34, 1445.4pt x 903.375pt>
+File: Part1_avplots_model3.png Graphic file (type png)
+
+<use Part1_avplots_model3.png>
+Package pdftex.def Info: Part1_avplots_model3.png used on input line 99.
+(pdftex.def)             Requested size: 341.43306pt x 213.3959pt.
+ <Part2_Pairs.png, id=35, 1445.4pt x 903.375pt>
+File: Part2_Pairs.png Graphic file (type png)
+
+<use Part2_Pairs.png>
+Package pdftex.def Info: Part2_Pairs.png used on input line 113.
+(pdftex.def)             Requested size: 341.43306pt x 213.3959pt.
+ [5 <./Part1_summary_allmodels.png> <./Part1_avplots_model3.png>] <Part2_influe
+nceplot.png, id=41, 1445.4pt x 903.375pt>
+File: Part2_influenceplot.png Graphic file (type png)
+
+<use Part2_influenceplot.png>
+Package pdftex.def Info: Part2_influenceplot.png used on input line 123.
+(pdftex.def)             Requested size: 369.88582pt x 231.17775pt.
+ [6 <./Part2_Pairs.png> <./Part2_influenceplot.png>] <Part2_summaryminusservice
+.png, id=47, 489.83pt x 283.0575pt>
+File: Part2_summaryminusservice.png Graphic file (type png)
+
+<use Part2_summaryminusservice.png>
+Package pdftex.def Info: Part2_summaryminusservice.png used on input line 133.
+(pdftex.def)             Requested size: 312.9803pt x 180.86679pt.
+
+<Part2_summary_model3.png, id=48, 496.85625pt x 335.2525pt>
+File: Part2_summary_model3.png Graphic file (type png)
+
+<use Part2_summary_model3.png>
+Package pdftex.def Info: Part2_summary_model3.png used on input line 143.
+(pdftex.def)             Requested size: 312.9803pt x 211.18462pt.
+
+<Part2_avplots_interaction.png, id=49, 1445.4pt x 903.375pt>
+File: Part2_avplots_interaction.png Graphic file (type png)
+
+<use Part2_avplots_interaction.png>
+Package pdftex.def Info: Part2_avplots_interaction.png used on input line 150.
+(pdftex.def)             Requested size: 455.24408pt x 284.52328pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[7 <./Part2_summaryminusservice.png> <./Part2_summary_model3.png>] [8 <./Part2_
+avplots_interaction.png>] (./STAT239_HW1.aux) ) 
+Here is how much of TeX's memory you used:
+ 4340 strings out of 492995
+ 68359 string characters out of 6132704
+ 133870 words of memory out of 5000000
+ 7853 multiletter control sequences out of 15000+600000
+ 7588 words of font info for 27 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 42i,6n,40p,1112b,264s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmr17.pfb>
+Output written on STAT239_HW1.pdf (8 pages, 4997891 bytes).
+PDF statistics:
+ 78 PDF objects out of 1000 (max. 8388607)
+ 36 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 66 words of extra memory for PDF output out of 10000 (max. 10000000)
+

@@ -1,0 +1,384 @@
+plot(model, 3)
+plot(model, 4)
+plot(model, 5)
+plot(model, 1)
+plot(BigMac ~ FoodIndex, BigMac2003)
+plot(BigMac ~ FoodIndex, BigMac2003, id.n=1)
+plot(BigMac ~ FoodIndex, BigMac2003, id.n=2)
+plot(BigMac ~ FoodIndex, BigMac2003, boxplots = FALSE, spread = FALSE, id.n=2)
+scatterplot(BigMac ~ FoodIndex, BigMac2003)
+scatterplot(BigMac ~ FoodIndex, BigMac2003, spread = FALSE)
+scatterplot(BigMac ~ FoodIndex, BigMac2003)
+plot(model, 1)
+library(MASS)
+library(ISLR)
+fix(Boston)
+names(Boston)
+?Boston
+3+4
+model = lm(medv ~ lstat, data = Boston)
+model
+summary(model)
+confint(model)
+names(Boston)
+fix(Boston)
+predict(model, data.frame(lstat = 15), interval = "confidence")
+fix(Boston)
+scatterplot(medv, lstat, Boston)
+scatterplot(medv, lstat, data+Boston)
+scatterplot(medv, lstat, data=Boston)
+scatterplot(medv ~ lstat, data=Boston)
+scatterplot(medv ~ lstat, data=Boston, boxplots = FALSE)
+plot(lstat, medv)
+attach(Boston)
+plot(lstat, medv)
+abline(model.fit)
+abline(model)
+abline(model, 1)
+abline(model, 2)
+abline(model)
+abline(model, pch = 3)
+abline(model, col = "red")
+plot(model)
+fix(Boston)
+par(mfrow = c(2, 2))
+plot(model)
+plot(model, 1)
+plot(lstat, mdev)
+plot(lstat, mdev, data=Boston)
+plot(lstat ~ mdev, data=Boston)
+plot(lstat, medv, data=Boston)
+plot(lstat ~ medv, data=Boston)
+par(mfrow = c(1, 1))
+plot(lstat ~ medv, data=Boston)
+predict(model)
+plot(model)
+plot(lstat ~ medv, data=Boston)
+plot(predict(model))
+plot(model, 1)
+plot(hatvalues(model))
+plot(model, 1)
+plot(model)> plot(lstat ~ medv, data=Boston)
+plot(lstat ~ medv, data=Boston
+plot(lstat ~ medv, data=Boston)
+model = lm(medv~., data=Boston)
+plot(medv ~ lstat + age, data=Boston)
+summary(model)
+model = lm(medv~lstat + I(stat^2), data=Boston)
+model = lm(medv~lstat + I(stat^2))
+model = lm(medv~lstat + I(stat^2), data = Boston)
+model = lm(medv~lstat + I(lstat^2))
+plot(model)
+plot(medv ~ lstat, data = Boston)
+plot(lstat ~ medv, data = Boston)
+fix(Boston)
+plot(medv ~ lstat, data = Boston)
+abline(model)
+model = lm(medv~lstat, data = Boston)
+abline(model)
+plot(lstat, medv)
+abline(model, 1)
+abline(model, 2)
+plot(model)
+model
+plot(lstat, medv)
+abline(model)
+residuals()
+residuals(model)
+plot(residuals(model))
+abline(model)
+plot(residuals(model))
+plot(predict(model), residuals(model))
+plot(residuals(model))
+plot(predict(model), residuals(model))
+predict(model)
+sort(predict(model))
+plot(sort(predict(model)))
+plot(predict(model), sort(predict(model)))
+plot(lstat, sort(predict(model)))
+plot(medv, sort(predict(model)))
+plot(lstat, sort(predict(model)))
+plot(predict(model), residuals(model))
+plot(predict(model), rstudent(model))
+model = lm(medv~I(lstat^2), data=boston)
+model = lm(medv~I(lstat^2), data=Boston)
+plot(model)
+plot(medv, I(lstat^2))
+plot(I(lstat^2), medv)
+plot(Ilstat, medv)
+plot(lstat, medv)
+plot(I(lstat^0.5), medv)
+plot(log(lstat), medv)
+abline(model)
+plot(log(lstat), medv)
+scatterplot(log(lstat), medv, Boston, boxplots = FALSE)
+model = lm(log(lstat), medv, data = Boston)
+model = lm(log(lstat)~ medv, data = Boston)
+rstudent(model)
+plot(rstudent(model))
+abline(0, 1)
+plot(rstudent(model))
+abline(1, 0)
+abline(, 0)
+plot(rstudent(model))
+abline(0, 0)
+model = lm(medv~lstat+I(lstat^2), data = Boston)
+plot(rstudent(model))
+model = lm(medv~lstat+I(lstat^2), data = Boston)#
+plot(rstudent(model))
+abline(0,0)
+model1 = lm(medv~lstat, data = Boston)#
+model2 = lm(medv~lstat+I(lstat^2), data = Boston)#
+plot(rstudent(model1))#
+abline(0,0)#
+par(mfrow = c(2,2))#
+plot(rstudent(model2))#
+abline(0,0)
+par(mfrow = c(2,2))
+model1 = lm(medv~lstat, data = Boston)#
+model2 = lm(medv~lstat+I(lstat^2), data = Boston)#
+par(mfrow = c(2,2))#
+plot(rstudent(model1))#
+abline(0,0)#
+plot(rstudent(model2))#
+abline(0,0)
+model1 = lm(medv~lstat, data = Boston)#
+model2 = lm(medv~lstat+I(lstat^2), data = Boston)#
+model3 = lm(medvl~log(lstat), data = Boston)#
+par(mfrow = c(2,2))#
+plot(rstudent(model1))#
+abline(0,0)#
+plot(rstudent(model2))#
+abline(0,0)#
+plot(rstudent(model3))#
+abline(0,0)
+model1 = lm(medv~lstat, data = Boston)#
+model2 = lm(medv~lstat+I(lstat^2), data = Boston)#
+model3 = lm(medv~log(lstat), data = Boston)#
+par(mfrow = c(2,2))#
+plot(rstudent(model1))#
+abline(0,0)#
+plot(rstudent(model2))#
+abline(0,0)#
+plot(rstudent(model3))#
+abline(0,0)
+anova()?
+1
+?anova
+?directory
+setwd(~/Desktop/AUB/2017 - 2018/2017 - 2018 Spring/STAT 239/Homework 1)
+setwd(~/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/Homework 1)
+setwd(Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/Homework 1)
+setwd(Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+setwd(~/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+setwd(Users/mbpr/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+setwd("Macintosh HD"/Users/mbpr/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+setwd(~/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+?setwd
+setwd(""~/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1""")
+setwd(Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+ls
+getwd()
+setwd('Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1"')
+cardata <- read.table(file="cardata.txt", header=T)
+model1 = lm(SuggestedRetailPrice~EngineSize+Cylinders+Horsepower+HighwayMPG+Weight+WheelBase+factor(Hybrid), cardata)
+model2 = lm(bcPower(SuggestedRetailPrice, -0.5) ~ log(EngineSize) + log(Cylinders) + log(Horsepower) + bcPower(HighwayMPG, -1) + bcPower(Weight, 1) + bcPower(WheelBase, 1) + factor(Hybrid), data = cardata)
+library(alr4)
+model2 = lm(bcPower(SuggestedRetailPrice, -0.5) ~ log(EngineSize) + log(Cylinders) + log(Horsepower) + bcPower(HighwayMPG, -1) + bcPower(Weight, 1) + bcPower(WheelBase, 1) + factor(Hybrid), data = cardata)
+par(mfrow=c(1,2))#
+plot(predict(model1), rstudent(model1))#
+abline(0,0)#
+plot(predict(model2), rstudent(model2))#
+abline(0,0)
+plot(model2, 1)
+pow2 <- powerTransform(cbind(SuggestedRetailPrice, EngineSize, Cylinders, Horsepower, HighwayMPG, Weight, WheelBase, factor(Hybrid)) ~ 1, data = cardata, subset=-67)
+summary(pow2)
+model3 = lm(bcPower(SuggestedRetailPrice, -0.5) ~ log(EngineSize) + log(Cylinders) + log(Horsepower) + bcPower(HighwayMPG, -1) + bcPower(Weight, 0.5) + log(WheelBase) + factor(Hybrid), data = cardata, subset=-67)
+par(mfrow=c(2,2))#
+abline(0,0)#
+plot(model1, 1)#
+abline(0,0)#
+plot(model2, 1)#
+abline(0,0)#
+plot(model3, 1)
+summary(model3)
+pow3 <- powerTransform(cbind(SuggestedRetailPrice, EngineSize, Cylinders, Horsepower, Weight) ~ 1, data = cardata)
+summary(pow3)
+model4 = lm(bcPower(SuggestedRetailPrice, -0.33) ~ bcPower(EngineSize, 0.5) + log(Cylinders) + bcPower(Horsepower, 0.33) + bcPower(Weight, 1.42) + factor(Hybrid), data = cardata, subset=-67)
+summary(model4)
+par(mfrow=c(3, 2))#
+avPlot(model3, "log(Cylinders)")#
+avPlot(model3, "log(Horsepower)")#
+avPlot(model3, "log(WheelBase)")#
+avPlot(model3, "bcPower(HighwayMPG, -1)")#
+avPlot(model3, "bcPower(Weight, 0.5)")#
+avPlot(model3, "factor(Hybrid)1")
+par(mfrow=c(2, 3))#
+avPlot(model3, "log(Cylinders)")#
+avPlot(model3, "log(Horsepower)")#
+avPlot(model3, "log(WheelBase)")#
+avPlot(model3, "bcPower(HighwayMPG, -1)")#
+avPlot(model3, "bcPower(Weight, 0.5)")#
+avPlot(model3, "factor(Hybrid)1")
+summary(model2)
+pairs(bcPower(SuggestedRetailPrice, -0.33) ~ bcPower(EngineSize, 0.5) + log(Cylinders) + bcPower(Horsepower, 0.33) + bcPower(Weight, 1.42), cardataframe, subset=-67)
+pairs(bcPower(SuggestedRetailPrice, -0.33) ~ bcPower(EngineSize, 0.5) + log(Cylinders) + bcPower(Horsepower, 0.33) + bcPower(Weight, 1.42), cardata, subset=-67)
+pairs(bcPower(SuggestedRetailPrice, -0.5) ~ log(EngineSize) + log(Cylinders) + log(Horsepower) + bcPower(HighwayMPG, -1) + bcPower(Weight, 0.5) + log(WheelBase), data=cardata, subset=-67)
+log(10)
+log(2.71)
+summary(pow2)
+cardata
+pow2 <- powerTransform(cbind(SuggestedRetailPrice, EngineSize, Cylinders, Horsepower, HighwayMPG, Weight, WheelBase, factor(Hybrid)) ~ 1, data = cardata, subset=-67)
+summary(pow2)
+model3 = lm(bcPower(SuggestedRetailPrice, -0.5) ~ log(EngineSize) + log(Cylinders) + log(Horsepower) + bcPower(HighwayMPG, -1) + Weight + log(WheelBase) + factor(Hybrid), data = cardata, subset=-67)
+summary(model3)
+par(mfrow=c(2,2))#
+abline(0,0)#
+plot(model1, 1)#
+abline(0,0)#
+plot(model2, 1)#
+abline(0,0)#
+plot(model3, 1)
+par(mfrow=c(2, 3))#
+avPlot(model3, "log(Cylinders)")#
+avPlot(model3, "log(Horsepower)")#
+avPlot(model3, "log(WheelBase)")#
+avPlot(model3, "bcPower(HighwayMPG, -1)")#
+avPlot(model3, "bcPower(Weight, 0.5)")#
+avPlot(model3, "factor(Hybrid)1")
+par(mfrow=c(2, 3))#
+avPlot(model3, "log(Cylinders)")#
+avPlot(model3, "log(Horsepower)")#
+avPlot(model3, "log(WheelBase)")#
+avPlot(model3, "bcPower(HighwayMPG, -1)")#
+avPlot(model3, "Weight")#
+avPlot(model3, "factor(Hybrid)1")
+avPlot(model3, "log(EngineSize)")
+par(mfrow=c(3, 3))#
+avPlot(model3, "log(Cylinders)")#
+avPlot(model3, "log(Horsepower)")#
+avPlot(model3, "log(WheelBase)")#
+avPlot(model3, "bcPower(HighwayMPG, -1)")#
+avPlot(model3, "Weight")#
+avPlot(model3, "log(EngineSize)")#
+avPlot(model3, "factor(Hybrid)1")
+model5 = lm(bcPower(SuggestedRetailPrice, -0.33) ~ bcPower(EngineSize, 0.5) + log(Cylinders) + bcPower(Horsepower, 0.33) + bcPower(Weight, 1.42) + factor(Hybrid) + factor(Manufacturer), data = cardata, subset=-67)
+summary(model5)
+avplot(model5, "factor(Manufacturer)Chevrolet")
+avPlot(model5, "factor(Manufacturer)Chevrolet")
+cardata
+fix(cardata)
+boom
+nfokho
+library(alr4)#
+####	read data from nyc.csv#
+resdata <- read.csv(file="nyc.csv", header=T)
+model1 = lm(Price ~ Food + Service + Decor + East, data = resdata)#
+summary(model1)
+pairs(~ Price + Food + Service + Decor + East, resdata)
+pow <- powerTransform(cbind(Price, Food, Service, Decor, factor(East)) ~ 1, data = resdata)
+summary(pow)#
+summary(resdata)
+par(mfrow=c(1,1))#
+plot(model1, 1)#
+abline(0,0)
+influenceIndexPlot(model1)
+par(mfrow=c(1,1))#
+plot(model1, 1)#
+abline(0,0)
+pairs(~ Price + Food + Service + Decor + East, resdata)
+influenceIndexPlot(model1)
+summary(model1)
+model2 = lm(Price ~ Food + Decor + East, data = resdata)
+par(mfrow = c(2,2))#
+avPlot(model1, "Food") #
+avPlot(model1, "Decor")#
+avPlot(model1, "East")#
+avPlot(model1, "Service")
+model2 = lm(Price ~ Food + Decor + East, data = resdata)
+par(mfrow = c(2,2))#
+avPlot(model2, "Food") #
+avPlot(model2, "Decor")#
+avPlot(model2, "East")
+summary(model2)
+model4 = lm(Price ~ Food + Decor + East + Service + Food_East + Decor_East + Service_East, data = resdata, subset = -c(56, 30, 130))
+Food_East = (resdata$Food - mean(resdata$Food)) * (resdata$East - mean(resdata$East))#
+Decor_East = (resdata$Decor - mean(resdata$Decor)) * (resdata$East - mean(resdata$East))#
+Service_East = (resdata$Service - mean(resdata$Service)) * (resdata$East - mean(resdata$East))
+model4 = lm(Price ~ Food + Decor + East + Service + Food_East + Decor_East + Service_East, data = resdata, subset = -c(56, 30, 130))
+summary(model4)
+par(mfrow = c(2,3))#
+avPlot(model4, "Food") #
+avPlot(model4, "Decor")#
+avPlot(model4, "East")#
+avPlot(model4, "Decor_East")#
+avPlot(model4, "Food_East")#
+avPlot(model4, "Service_East")
+model4 = lm(Price ~ Food + Decor + East + Service + Food_East + Decor_East + Service_East, data = resdata)
+summary(model4)
+par(mfrow=c(1,1))#
+plot(model1, 1)#
+abline(0,0)
+par(mfrow=c(1,1))#
+abline(0,0)#
+plot(model1, 1)
+model1 = lm(SuggestedRetailPrice~EngineSize+Cylinders+Horsepower+HighwayMPG+Weight+WheelBase+factor(Hybrid), cardata)
+par(mfrow=c(1,1))#
+abline(0,0)#
+plot(model1, 1)
+cardata
+fix(cardata)
+summary(cardtaa)
+summary(cardata)
+fix(cardata)
+model3 = lm(bcPower(SuggestedRetailPrice, -0.5) ~ log(EngineSize) + log(Cylinders) + log(Horsepower) + bcPower(HighwayMPG, -1) + Weight + log(WheelBase) + factor(Hybrid), data = cardata, subset=-67)
+model2 = lm(bcPower(SuggestedRetailPrice, -0.5) ~ log(EngineSize) + log(Cylinders) + log(Horsepower) + bcPower(HighwayMPG, -1) + bcPower(Weight, 1) + bcPower(WheelBase, 1) + factor(Hybrid), data = cardata)
+model1 = lm(SuggestedRetailPrice~EngineSize+Cylinders+Horsepower+HighwayMPG+Weight+WheelBase+factor(Hybrid), cardata)
+summary(model1)#
+summary(model2)#
+summary(model3)
+model4 = lm(bcPower(SuggestedRetailPrice, -0.33) ~ bcPower(EngineSize, 0.5) + log(Cylinders) + bcPower(Horsepower, 0.33) + bcPower(Weight, 1.42) + factor(Hybrid), data = cardata, subset=-67)
+summary(model4)
+par(mfrow=c(3, 3))#
+avPlot(model3, "log(Cylinders)")#
+avPlot(model3, "log(Horsepower)")#
+avPlot(model3, "log(WheelBase)")#
+avPlot(model3, "bcPower(HighwayMPG, -1)")#
+avPlot(model3, "Weight")#
+avPlot(model3, "log(EngineSize)")
+par(mfrow=c(3, 2))#
+avPlot(model3, "log(Cylinders)")#
+avPlot(model3, "log(Horsepower)")#
+avPlot(model3, "log(WheelBase)")#
+avPlot(model3, "bcPower(HighwayMPG, -1)")#
+avPlot(model3, "Weight")#
+avPlot(model3, "log(EngineSize)")
+par(mfrow=c(2, 3))#
+avPlot(model3, "log(Cylinders)")#
+avPlot(model3, "log(Horsepower)")#
+avPlot(model3, "log(WheelBase)")#
+avPlot(model3, "bcPower(HighwayMPG, -1)")#
+avPlot(model3, "Weight")#
+avPlot(model3, "log(EngineSize)")
+model2 = lm(Price ~ Food + Decor + East, data = resdata)
+summary(model3)
+model3 = lm(Price ~ Food + Decor + East + Service + Food_East + Decor_East + Service_East, data = resdata)
+summary(model3)
+par(mfrow=c(3, 2))#
+avPlot(model3, "log(Cylinders)")#
+avPlot(model3, "log(Horsepower)")#
+avPlot(model3, "log(WheelBase)")#
+avPlot(model3, "bcPower(HighwayMPG, -1)")#
+avPlot(model3, "Weight")#
+avPlot(model3, "log(EngineSize)")
+library(alr4)
+fix(car)
+fix(cardata)
+dim(BigMac2003)#
+colnames(BigMac2003)
+scatterplot(BigMac ~ FoodIndex, BigMac2003, boxplots=FALSE, spread=FALSE, id.n=2)
+scatterplot(BigMac ~ FoodIndex, BigMac2003, boxplots=FALSE, spread=FALSE, id.n=2)
+library("cardata.txt")
+read.table(file="cardata.txt", header=T)
+plot(SuggestedRetailPrice, EngineSize)
+model1 = lm(SuggestedRetailPrice~EngineSize+Cylinders+Horsepower+HighwayMPG+Weight+WheelBase+factor(Hybrid), cardata)

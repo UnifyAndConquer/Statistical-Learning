@@ -1,0 +1,553 @@
+c(ridge.coefs$beta[,0])
+ridge.coefs$beta[1,1]
+ridge.coefs$beta[100,1]
+ridge.coefs$beta[1,100]
+ridge.coefs$beta[7,100]
+ridge.coefs$beta[1,0]
+ridge.coefs$beta[2,0]
+c(ridge.coefs$beta[1,0])
+ridge.coefs$beta[,0]
+colnames(ridge.coef$beta)
+colnames(ridge.coefs$beta)
+colnames(ridge.coefs$beta[,])
+colnames(ridge.coefs$beta[,0])
+rownames(ridge.coefs$beta)
+ridge.coefs$beta[1,1]
+ridge.coefs$beta[1,100]
+text(x=7.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8))#
+for(p in 1:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
+}#
+text(x=7.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
+# coefficients vs degrees of freedom#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8))#
+for(p in 1:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
+}#
+text(x=8, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8))#
+for(p in 1:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
+?sum
+shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])
+k = 10#
+folds = sample(1:k, nrow(x.train), replace = TRUE)#
+cv.errors = matrix(NA, k, 100)	# ridge#
+cv.errors2 = matrix(NA, k, 100)  # lasso#
+lam = 10^seq(10, -2, length=100)#
+df = rep(0, length(lam))#
+df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
+shrink = rep(0, length(lam))  # shrinkage factor for lasso#
+d = svd(x.train)$d#
+# compute test error for every value of lambda at every fold#
+for(i in 1:k)#
+{#
+	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
+	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
+	for(l in 1:length(lam))#
+	{#
+		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
+		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
+		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
+		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
+		# compute degrees of freedom for ridge#
+		if(i == 1)#
+		{#
+			for(j in 1:(ncol(x.train) - 1))#
+			{#
+				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
+				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
+			}#
+		}#
+		# compute shrinkage factor for lasso#
+		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])#
+	}#
+}
+length(shrink)
+mean.cv.errors = apply(cv.errors2, 2, mean)
+plot(shrink, mean.cv.errors2)
+# average over folds (columns of cv.error)#
+mean.cv.errors = apply(cv.errors, 2, mean)#
+mean.cv.errors2 = apply(cv.errors2, 2, mean)
+plot(shrink, mean.cv.errors2)
+k = 10#
+folds = sample(1:k, nrow(x.train), replace = TRUE)#
+cv.errors = matrix(NA, k, 100)	# ridge#
+cv.errors2 = matrix(NA, k, 100)  # lasso#
+lam = 10^seq(10, -2, length=100)#
+df = rep(0, length(lam))#
+df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
+shrink = rep(0, length(lam))  # shrinkage factor for lasso#
+d = svd(x.train)$d#
+# compute test error for every value of lambda at every fold#
+for(i in 1:k)#
+{#
+	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
+	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
+	for(l in 1:length(lam))#
+	{#
+		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
+		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
+		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
+		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
+		# compute degrees of freedom for ridge#
+		if(i == 1)#
+		{#
+			for(j in 1:(ncol(x.train) - 1))#
+			{#
+				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
+				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
+			}#
+		}#
+		# compute shrinkage factor for lasso#
+		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])#
+	}#
+}#
+#
+# average over folds (columns of cv.error)#
+mean.cv.errors = apply(cv.errors, 2, mean)#
+mean.cv.errors2 = apply(cv.errors2, 2, mean)#
+#
+# plot ridge test error vs degrees of freedom#
+plot(df.ortho, mean.cv.errors)#
+plot(df, mean.cv.errors)#
+#
+# plot lasso test error vs shrinkage factor#
+plot(shrink, mean.cv.errors2)
+k = 10#
+folds = sample(1:k, nrow(x.train), replace = TRUE)#
+cv.errors = matrix(NA, k, 100)	# ridge#
+cv.errors2 = matrix(NA, k, 100)  # lasso#
+lam = 10^seq(10, -2, length=100)#
+df = rep(0, length(lam))#
+df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
+shrink = rep(0, length(lam))  # shrinkage factor for lasso#
+d = svd(x.train)$d#
+# compute test error for every value of lambda at every fold#
+for(i in 1:k)#
+{#
+	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
+	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
+	for(l in 1:length(lam))#
+	{#
+		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
+		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
+		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
+		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
+		# compute degrees of freedom for ridge#
+		if(i == 1)#
+		{#
+			for(j in 1:(ncol(x.train) - 1))#
+			{#
+				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
+				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
+			}#
+		}#
+		# compute shrinkage factor for lasso#
+		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])#
+	}#
+}#
+#
+# average over folds (columns of cv.error)#
+mean.cv.errors = apply(cv.errors, 2, mean)#
+mean.cv.errors2 = apply(cv.errors2, 2, mean)#
+#
+# plot ridge test error vs degrees of freedom#
+plot(df.ortho, mean.cv.errors)#
+plot(df, mean.cv.errors)
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0, 1.6))
+mean.cv.errors2
+mean.cv.errors
+k = 10#
+folds = sample(1:k, nrow(x.train), replace = TRUE)#
+cv.errors = matrix(NA, k, 100)	# ridge#
+cv.errors2 = matrix(NA, k, 100)  # lasso#
+lam = 10^seq(10, -2, length=100)#
+df = rep(0, length(lam))#
+df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
+shrink = rep(0, length(lam))  # shrinkage factor for lasso#
+d = svd(x.train)$d#
+# compute test error for every value of lambda at every fold#
+for(i in 1:k)#
+{#
+	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
+	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
+	for(l in 1:length(lam))#
+	{#
+		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
+		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
+		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
+		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
+		# compute degrees of freedom for ridge#
+		if(i == 1)#
+		{#
+			for(j in 1:(ncol(x.train) - 1))#
+			{#
+				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
+				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
+			}#
+		}#
+		# compute shrinkage factor for lasso#
+		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])#
+	}#
+}#
+#
+# average over folds (columns of cv.error)#
+mean.cv.errors = apply(cv.errors, 2, mean)#
+mean.cv.errors2 = apply(cv.errors2, 2, mean)#
+#
+# plot ridge test error vs degrees of freedom#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0, 1.6))#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0, 1.6))#
+#
+# plot lasso test error vs shrinkage factor#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0, 1.6))
+mean.cv.errors
+mean.cv.errors2
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6))#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6))
+shrink
+sum(lasso.coefs$beta[,0])
+shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,100])
+sum(lasso.coefs$beta[,100])
+k = 10#
+folds = sample(1:k, nrow(x.train), replace = TRUE)#
+cv.errors = matrix(NA, k, 100)	# ridge#
+cv.errors2 = matrix(NA, k, 100)  # lasso#
+lam = 10^seq(10, -2, length=100)#
+df = rep(0, length(lam))#
+df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
+shrink = rep(0, length(lam))  # shrinkage factor for lasso#
+d = svd(x.train)$d#
+# compute test error for every value of lambda at every fold#
+for(i in 1:k)#
+{#
+	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
+	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
+	for(l in 1:length(lam))#
+	{#
+		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
+		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
+		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
+		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
+		# compute degrees of freedom for ridge#
+		if(i == 1)#
+		{#
+			for(j in 1:(ncol(x.train) - 1))#
+			{#
+				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
+				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
+			}#
+		}#
+		# compute shrinkage factor for lasso#
+		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,100])#
+	}#
+}#
+#
+# average over folds (columns of cv.error)#
+mean.cv.errors = apply(cv.errors, 2, mean)#
+mean.cv.errors2 = apply(cv.errors2, 2, mean)#
+#
+# plot ridge test error vs degrees of freedom#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6))#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6))#
+#
+# plot lasso test error vs shrinkage factor#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0, 1.6))
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.6))
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8))
+#### plot lasso coefficients vs shrinkage factor#
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8))#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
+}#
+text(x=8.1, y=lasso.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
+#### plot lasso coefficients vs shrinkage factor#
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8))#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(df.ortho, lasso.coefs$beta[p,], type="b", col="blue")#
+}#
+text(x=8.1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+shrink
+#### plot lasso coefficients vs shrinkage factor#
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8))#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(df.ortho, lasso.coefs$beta[p,], type="b", col="blue")#
+}#
+text(x=1.1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+#### plot lasso coefficients vs shrinkage factor#
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8))#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue")#
+}#
+text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6), type="b")#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6), type="b")
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b")#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b")
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", lab="bbd")
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", label="bbd")
+?plot
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom")
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor")
+#### plot ridge test error vs degrees of freedom#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom")#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom")#
+#
+#### plot lasso test error vs shrinkage factor#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor")#
+#### plot ridge coefficients vs degrees of freedom#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))#
+#### plot lasso coefficients vs shrinkage factor#
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue")#
+}#
+text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor")
+pcr.coefs = pcr(lpsa~., x.train[folds!=i,], scale=TRUE, validation="CV")
+library(pls)
+pcr.coefs = pcr(lpsa~., x.train[folds!=i,], scale=TRUE, validation="CV")
+pcr.coefs = pcr(lpsa~., data=x.train[folds!=i,], scale=TRUE, validation="CV")
+pcr.coefs = pcr(lpsa~., data=as.data.frame(x.train[folds!=i,]), scale=TRUE, validation="CV")
+pcr.coefs = pcr(prostate$lpsa~., data=as.data.frame(x.train[folds!=i,]), scale=TRUE, validation="CV")
+pcr.coefs = pcr(lpsa~., data=prostate[prostate$train==T], scale=TRUE, validation="CV")
+pcr.coefs = pcr(lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+pcr.coefs = pcr(lpsa~., data=prostate[train==T,], scale=TRUE, validation="CV")
+?pcr
+pcr.coefs = pcr(lpsa~., data=prostate, scale=TRUE, validation="CV")
+?index
+pcr.coefs = pcr(lpsa~., data=prostate, subset= scale=TRUE, validation="CV")
+ptrain <- subset(prostate, prostate$train==T)
+pcr.coefs = pcr(lpsa~., data=ptrain, scale=TRUE, validation="CV")
+ptrain
+length(ptrain)
+nrow(ptrain)
+pcr.coefs = pcr(lpsa~., data=ptrain, scale=TRUE, validation="CV")
+?pcr
+set.seed(42)
+ptrain <- subset(prostate, prostate$train==T)
+pcr.coefs = pcr(lpsa~., data=ptrain, scale=TRUE, validation="CV")
+ptrain
+pcr.coefs = pcr(lpsa~., data=prostate, scale=TRUE, validation="CV")
+pcr.coefs = pcr(lpsa~., data=prostate, subset=subset(prostate, prostate$train==T), scale=TRUE, validation="CV")
+pcr.coefs = pcr(lpsa~., data=prostate, subset=prostate[prostate$train==T], scale=TRUE, validation="CV")
+pcr.coefs = pcr(lpsa~., data=prostate, subset=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+pcr.coefs = pcr(lpsa~., data=as.data.frame(ptrain), scale=TRUE, validation="CV")
+prostate
+prostate[prostate$train==T,]
+pcr.coefs = pcr(lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+pcr.coefs = pcr(ptrain$lpsa~., data=ptrain, scale=TRUE, validation="CV")
+ptrain <- subset(prostate, prostate$train==T)
+pcr.coefs = pcr(ptrain$lpsa~., data=ptrain, scale=TRUE, validation="CV")
+pcr.coefs = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+ptrain <- prostate[prostate$train==T,]
+pcr.coefs = pcr(ptrain$lpsa~., data=ptrain, scale=TRUE, validation="CV")
+ptrain = prostate[prostate$train==T,]
+pcr.coefs = pcr(ptrain$lpsa~., data=ptrain, scale=TRUE, validation="CV")
+pcr.coefs
+pcr.coefs$beta
+validationplot(pcr.coefs, val.type="MSEP")
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])
+ols
+pred.ols = predict(ols, newx = x.test)
+pred.ols = predict(ols, s=0, newx = x.test)
+pred.ols = predict.ols(ols, s=0, newx = x.test)
+pred.ols = predict.glmnet(ols, s=0, newx = x.test)
+pred.ols = predict(ols, prostate[prostate$train==F,], interval="prediction")
+pred.ols = predict(ols, x.test, interval="prediction")
+pred.ols = predict(ols, as.data.frame(x.test), interval="prediction")
+pred.ols = predict(ols, as.data.frame(prostate[prostate$train==F,]), interval="prediction")
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])
+summary(ols)
+pred.ols = predict(ols, data.frame(prostate[prostate$train==F,]), interval="prediction")
+pred.ols = predict.lm(ols, data.frame(prostate[prostate$train==F,]), interval="prediction")
+pred.ols
+y.test
+ols.error = mean((y.test-pred.ols)^2)
+ols.error
+pred.ols = predict.lm(ols, data.frame(x.test), interval="prediction")
+ols.error = mean((y.test-pred.ols)^2)
+ols.error
+ols.error = mean((y.test-pred.ols$fit)^2)
+ols.error = mean((y.test-pred.ols[,1])^2)
+ols.error
+validationplot(pcr.coefs, val.type="MSEP")
+?validationplot
+?pcr
+pcr.coefs$terms
+?pcr
+coef(pcr.coefs)
+summary(pcr.coefs)
+pcr.pred = predict(pcr.coefs, x.test, ncomp=8)
+pcr.pred = predict(pcr.coefs, data.frame(x.test), ncomp=8)
+pcr.pred = predict.pcr(pcr.coefs, data.frame(x.test), ncomp=8)
+pcr.pred = predict(pcr.coefs, data.frame(x.test), ncomp=8)
+pcr.pred = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=8)
+pcr.pred
+pcr.pred = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=7)
+pcr.pred
+pcr.pred = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=8)
+pcr.error = mean((y.test-pred.pcr)^2)
+pred.pcr = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=8)
+pcr.error = mean((y.test-pred.pcr)^2)
+pcr.error
+pred.pcr = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=1)
+pred.pcr
+summary(pcr)
+summary(pcr.coefs)
+pred.pcr = predict(pcr.coefs, data.frame(x.test), ncomp=8)
+pred.ols = predict.lm(ols, data.frame(x.test), interval="prediction")
+pred.pcr = predict.mvr(pcr.coefs, data.frame(x.test), ncomp=8)
+?predict
+pred.pcr = predict(pcr.coefs, type="response", newdata=prostate[prostate$train==T,], ncomp=8)
+pcr.error = mean((y.test-pred.pcr)^2)
+pcr.error
+pred.pcr
+summary(pcr.coefs)
+pred.pcr = predict(pcr.coefs, newdata=prostate[prostate$train==F,], ncomp=8)
+pred.pcr = predict(pcr.coefs, data.frame(x.train), ncomp=8)
+pred.pcr = predict(pcr.coefs, data.frame(x.test), ncomp=8)
+x.test
+x.train
+pred.pcr = predict(pcr.coefs, data.frame(x.test), interval="prediction", ncomp=8)
+pred.pcr = predict(pcr.coefs, newdata=data.frame(x.test), interval="prediction", ncomp=8)
+pcr = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+validationplot(pcr, val.type="MSEP")
+pred.pcr = predict(pcr, newdata=data.frame(x.test), interval="prediction", ncomp=8)
+pred.pcr = predict(pcr, newdata=data.frame(x.test), interval="prediction", ncomp=9)
+pred.ols = predict(ols, data.frame(x.test), interval="prediction")
+pred.ols = predict.lm(ols, data.frame(x.test), interval="prediction")
+pred.pcr = predict.lm(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+pred.pcr = predict.pcr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+pred.pcr = predict.pls(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+pred.pcr = predict.glmnet(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+pred.pcr = predict.lm(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+pred.pcr = predict.pcr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+?pcr
+pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+?pcr
+?predict.mvr
+pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+pcr = mvr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+?predict.mvr
+predict.mvr
+?predict.mvr
+pcr = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")#
+validationplot(pcr, val.type="MSEP")#
+summary(pcr)#
+pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)#
+pcr.error = mean((y.test-pred.pcr)^2)
+library(pls)
+pcr = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")#
+validationplot(pcr, val.type="MSEP")#
+summary(pcr)#
+pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)#
+pcr.error = mean((y.test-pred.pcr)^2)
+?predict.mvr
+pcr.mvr <- pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+pred.pcr = predict.mvr(pcr.mvr, data.frame(x.test), interval="prediction", ncomp=8)
+pcr
+predict
+predict.lm
+predict.mvr
+require(pls)
+predict.mvr
+library(pls)
+predict.mvr
+?predict.mvr
+pcr = pcr(data.frame(y.train)~., data=data.frame(x.train), scale=TRUE, validation="CV")
+dat <- prostate[prostate$train==T,]
+y <- prostate[prostate$train==T,]$lpsa
+pcr = pcr(y~., data=dat, scale=TRUE, validation="CV")
+pcr = pcr(y~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+pcr = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+pcr = pcr(lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
+pcr = pcr(lpsa~., data=prostate, scale=TRUE, validation="CV")
+ptrain = data.frame(prostate[prostate$train==T,])
+pcr = pcr(lpsa~., data=ptrain, scale=TRUE, validation="CV")
+pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+pcr = pcr(lpsa~., data=prostate, scale=TRUE, validation="CV")
+pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
+pred.pcr = predict.mvr(pcr, prostate[prostate$train==T,], interval="prediction", ncomp=8)
+pred.pcr = predict(pcr, prostate[prostate$train==T,], interval="prediction", ncomp=8)
+pred.pcr
+sessionInfo()
+pls
+search()
+search(package:stats)
+search("package:stats")
+?search
+ls
+ls(package:stats)
+library(pls)
+detach(pls)
+?detach
+detach(MASS)
+detach("pls")
+detach(xtabs)
+detach(name=xtabs)
+ols = lm(prostate[prostate$train==T,]~., data=prostate[prostate$train==T,])
+library(ISLR)#
+prostate = read.table("prostate.data", header = T)
+ols = lm(prostate[prostate$train==T,]~., data=prostate[prostate$train==T,])
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])
+ols.pred = predict.lm(ols, data.frame(y.test), interval="predict")
+set.seed(42)#
+x.train = model.matrix(lpsa ~., prostate[prostate$train==TRUE,])[, -1]#
+y.train = prostate$lpsa[prostate$train==TRUE]#
+#
+x.test = model.matrix(lpsa ~., prostate[prostate$train==FALSE,])[, -1]#
+y.test = prostate$lpsa[prostate$train==FALSE]
+ols.pred = predict.lm(ols, data.frame(y.test), interval="predict")
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")
+ols.errors = mean((y.test - ols.pred)^2)
+ols.errors
+ols.errors = mean((y.test - ols.pred[1])^2)
+ols.errors
+ols.pred
+y.test
+ols.errors = mean((y.test - ols.pred[,1])^2)
+ols.errors

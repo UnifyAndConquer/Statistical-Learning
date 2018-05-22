@@ -1,0 +1,93 @@
+
+R version 3.4.3 (2017-11-30) -- "Kite-Eating Tree"
+Copyright (C) 2017 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[R.app GUI 1.70 (7463) x86_64-apple-darwin15.6.0]
+
+[Workspace restored from /Users/mbpr/.RData]
+[History restored from /Users/mbpr/.Rapp.history]
+
+> ?directory
+No documentation for ‘directory’ in specified packages and libraries:
+you could try ‘??directory’
+> setwd(~/Desktop/AUB/2017 - 2018/2017 - 2018 Spring/STAT 239/Homework 1)
+Error: unexpected '/' in "setwd(~/"
+> setwd(~/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/Homework 1)
+Error: unexpected '/' in "setwd(~/"
+> setwd(Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/Homework 1)
+Error: unexpected numeric constant in "setwd(Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/Homework 1"
+> setwd(Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+Error in setwd(Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1") : 
+  object 'Desktop' not found
+> setwd(~/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+Error: unexpected '/' in "setwd(~/"
+> setwd(Users/mbpr/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+Error in setwd(Users/mbpr/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1") : 
+  object 'Users' not found
+> setwd("Macintosh HD"/Users/mbpr/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+Error in setwd("Macintosh HD"/Users/mbpr/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1") : 
+  object 'Users' not found
+> setwd(~/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+Error: unexpected '/' in "setwd(~/"
+> ?setwd
+starting httpd help server ... done
+> setwd(""~/Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1""")
+Error: unexpected '/' in "setwd(""~/"
+> setwd(Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1")
+Error in setwd(Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1") : 
+  object 'Desktop' not found
+> ls
+function (name, pos = -1L, envir = as.environment(pos), all.names = FALSE, 
+    pattern, sorted = TRUE) 
+{
+    if (!missing(name)) {
+        pos <- tryCatch(name, error = function(e) e)
+        if (inherits(pos, "error")) {
+            name <- substitute(name)
+            if (!is.character(name)) 
+                name <- deparse(name)
+            warning(gettextf("%s converted to character string", 
+                sQuote(name)), domain = NA)
+            pos <- name
+        }
+    }
+    all.names <- .Internal(ls(envir, all.names, sorted))
+    if (!missing(pattern)) {
+        if ((ll <- length(grep("[", pattern, fixed = TRUE))) && 
+            ll != length(grep("]", pattern, fixed = TRUE))) {
+            if (pattern == "[") {
+                pattern <- "\\["
+                warning("replaced regular expression pattern '[' by  '\\\\['")
+            }
+            else if (length(grep("[^\\\\]\\[<-", pattern))) {
+                pattern <- sub("\\[<-", "\\\\\\[<-", pattern)
+                warning("replaced '[<-' by '\\\\[<-' in regular expression pattern")
+            }
+        }
+        grep(pattern, all.names, value = TRUE)
+    }
+    else all.names
+}
+<bytecode: 0x7f9ab3203d50>
+<environment: namespace:base>
+> getwd()
+[1] "/Users/mbpr"
+> setwd('Desktop/"AUB/2017 - 2018"/"2017 - 2018 Spring"/"STAT 239"/"Homework 1"')
+Error in setwd("Desktop/\"AUB/2017 - 2018\"/\"2017 - 2018 Spring\"/\"STAT 239\"/\"Homework 1\"") : 
+  cannot change working directory
+> 

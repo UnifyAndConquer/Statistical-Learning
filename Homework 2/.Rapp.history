@@ -1,0 +1,290 @@
+interaction.plot(titanic$classf, titanic$agef, titanic$surv/titanic$m)
+titanic$surv
+titanic$classf
+interaction.plot(titanic$class, titanic$age, titanic$surv/titanic$m)
+interaction.plots(titanic$class, titanic$age, titanic$surv/titanic$m)
+?interaction.plot
+interaction.plot(titanic$class, titanic$age, titanic$surv/titanic$m, type="b")
+interaction.plot(titanic$class, titanic$age, titanic$surv/titanic$m, type=c("l", "o""))
+interaction.plot(titanic$class, titanic$age, titanic$surv/titanic$m, type=c("l","o"))
+interaction.plot(titanic$class, titanic$age, titanic$surv/titanic$m, type="o")
+interaction.plot(titanic$class, titanic$age, titanic$surv/titanic$m, type="l")
+par(mfrow = c(2,2))#
+interaction.plot(titanic$class, titanic$age, titanic$surv/titanic$m, type="l")#
+interaction.plot(titanic$class, titanic$sex, titanic$surv/titanic$m, type="l")#
+interaction.plot(titanic$age, titanic$sex, titanic$surv/titanic$m, type="l")
+logModel2 <- glm(cbind(surv, m-surv)~classf+agef+sexf+classf*sexf+classf*agef+sexf*agef, family=binomial, data=titanic)
+Anova(logModel2, type=2)
+step(logModel2)
+?Anova
+Anova.glm(logModel2)
+anova.glm(logModel2)
+?anova.glm
+anova(logModel2)
+?step
+?avPlot
+avPlot(logModel2, c("classf", "agef", "sexf"))
+avPlot(logModel2, "classf")
+summary(logModel2)
+avPlot(logModel2, "classffirst")
+par(mfrow = c(1,1))
+avp(logModel2)
+avPlot(logModel2)
+avPlot(logModel2, ~classf)
+logModel2
+avPlots(logModel2)
+warnings()
+avPlots(logModel2)
+titanic3 = read.csv("titanic3.1.csv", header = T, skipNul = T)
+titanic3
+na.omit(titanic3)
+titanic3
+titanic4 <- titanic3[c("pclass", "survived", "sex", "age")]
+titanic4
+titanic2 <- na.omit(titanic4)
+titanic2
+sum(is.na(titanic4))
+sum(titanic4)
+adult3 <- subset(titanic2, age >= 18)#
+child3 <- subset(titanic2, age < 18)#
+male3 <- subset(titanic2, sex == "male")#
+female3 <- subset(titanic2, sex == "female")#
+#
+maleAdult3 <- subset(adult3, sex == "male")#
+maleChild3 <- subset(child3, sex == "male")#
+femaleAdult3 <- subset(adult3, sex == "female")#
+femaleChild3 <- subset(child3, sex == "female")
+plot(survived ~ class, maleAdult3, type = "p", main = "male adult")#
+plot(survived ~ class, maleChild3, type = "p", main = "male child")#
+plot(survived ~ class, femaleAdult3, type = "p", main = "female adult")#
+plot(survived ~ class, femaleChild3, type = "p", main = "female child")
+plot(survived ~ pclass, maleAdult3, type = "p", main = "male adult")#
+plot(survived ~ pclass, maleChild3, type = "p", main = "male child")#
+plot(survived ~ pclass, femaleAdult3, type = "p", main = "female adult")#
+plot(survived ~ pclass, femaleChild3, type = "p", main = "female child")
+plot(survived ~ pclass, maleAdult3, type = "p", main = "male adult")
+logModel1u <- glm(survived~class+age+sex, family=binomial, data=titanic2)
+logModel1u <- glm(survived~pclass+age+sex, family=binomial, data=titanic2)
+plot(logModel1u)
+summary(logModel1u)
+avPlots(logModel1u)
+logModel1u <- glm(survived~pclass+age+sex+pclass*age+pclass*sex+sex*age, family=binomial, data=titanic2)
+avPlots(logModel2u)
+logModel2u <- glm(survived~pclass+age+sex+pclass*age+pclass*sex+sex*age, family=binomial, data=titanic2)
+avPlots(logModel2u)
+avPlot(logModel2u, pclass)
+avPlot(logModel2u, variable="pclass")
+avPlot(logModel2u, variable="age")
+avPlot(logModel2u, variable="pclass*age")
+avPlot(logModel2u, variable="pclass:age")
+avPlot(logModel2u, variable="age:sex")
+avPlot(logModel2u, variable="sex:age")
+avPlot(logModel2u, variable="pclass:sex")
+avPlot(logModel2u, variable="pclass:age")
+avPlots(logModel2u)
+avPlot(logModel2u, variable="sex")
+avPlot(logModel2u, variable="sexmale:age")
+avPlot(logModel2u, variable="age:sexmale")
+avPlot(logModel2u, variable="pclass:sexmale")
+avPlot(logModel2u, variable="pclass:age")
+logModel2 <- glm(cbind(surv, m-surv)~classf+agef+sexf+classf*sexf+classf*agef+sexf*agef, family=binomial, data=titanic)
+anova(logModel2)
+step(logModel2)
+anova(logModel1)
+?anova
+Anova(logModel2, type=2)
+anova(logModel2)
+?Anova
+confint(logModel2)
+warnings()
+library(MASS)
+confint(logModel2)
+anova(logModel2)
+Anova(logModel2, type=2)
+summary(logModel2)
+logModel2$deviance
+logModel2$deviance
+logModel3 <- glm(cbind(surv, m-surv)~classf+agef+sexf+classf*sexf+classf*agef, family=binomial, data=titanic)
+logModel3 <- glm(cbind(surv, m-surv)~classf+agef+sexf+classf*sexf+classf*agef, family=binomial, data=titanic)
+summary(logModel3)
+summary(logModel2)
+par(mfrow=c(2, 3))
+avPlot(logModel2u, variable="pclass")#
+avPlot(logModel2u, variable="age")#
+avPlot(logModel2u, variable="sexmale")#
+avPlot(logModel2u, variable="pclass:age")#
+avPlot(logModel2u, variable="pclass:sexmale")#
+avPlot(logModel2u, variable="age:sexmale")
+mmps(logModel2u)
+?mmps
+mmps(logModel1u)
+marginal.plot(titanic2)
+pairs(titanic2)
+plot(survived~age*sex, titanic2)
+agesex <- titanic2$age*titanic2$sex
+plot(survived~agesex, titanic2)
+par(mfrow=c(2, 3))#
+avPlot(logModel2u, variable="pclass")#
+avPlot(logModel2u, variable="age")#
+avPlot(logModel2u, variable="sexmale")#
+avPlot(logModel2u, variable="pclass:age")#
+avPlot(logModel2u, variable="pclass:sexmale")#
+avPlot(logModel2u, variable="age:sexmale")
+?corr
+?cor
+cor(titanic2$age, titanic2$sex)
+cor(titanic2$sex, titanic2$age)
+??corr
+predict(logModel3, class)
+?predict
+predict(logModel3)
+summary(predict(logModel3))
+summary(logModel3)
+summary(logModel2)
+predict(logModel3)
+predict(logModel2)
+logModel3 <- glm(cbind(surv, m-surv)~classf+agef+sexf+classf*sexf+classf*agef, family=binomial, data=titanic)
+predict(logModel3)
+logModel3 <- glm(cbind(surv, m-surv)~classf+agef+sexf+classf*sexf+classf*agef, family=binomial, data=titanic)
+summary(logModel3)
+sum(titanic2$survived)
+titanic2
+summary(logModel3)
+Anova(logModel2, type=2)
+logModel1u <- glm(survived~pclass+age+sex, family=binomial, data=titanic2)
+titanic2 <- na.omit(titanic4)
+logModel3u <- glm(survived~pclass+age+sex+pclass*sex+pclass*age, family=binomial, data=titanic2)
+summary(logModel3u)
+logModel2u <- glm(survived~pclass+age+sex+pclass*sex+pclass*age+age*sex, family=binomial, data=titanic2)
+Anova(logModel3u, type=2)
+Anova(logModel2u, type=2)
+Anova(logModel2, type=2)
+step(logModel2u)
+avPlots(logModel2u)
+summary(logModel2u)
+summary(logModel3)
+g1 <- glm(cbind(died, m-died) ~ log(d), family=binomial, data=BlowBS)
+plot( I(died/m) ~ d, BlowBS,  cex=.4*sqrt(m), log="x", ylim=c(0,1))
+dnew <- seq(3, 40, length=100)
+lines(dnew, predict(g1, newdata=data.frame(d=dnew), type="response"), lwd=1.5)
+dnew <- seq(0, 80, length=100)
+lines(dnew, predict(logModel2u, newdata=data.frame(d=dnew), type="response"), lwd=1.5)
+predict(logModel2u)
+?predict
+lines(dnew, predict(logModel2u, type="response"), lwd=1.5)
+lines(predict(logModel2u, type="response"), lwd=1.5)
+lines(predict(logModel2u, type="response"), lwd=1.5)
+plot(predict(logModel2u, type="response"))
+titanic2
+classnew
+classnew <- c(1, 1, 2, 2, 3, 3)
+classnew
+classnew <- r(1, 1, 2, 2, 3, 3)
+?c
+classnew <- cbind(classnew, agenew, sexnew)
+agenew <- c("child", "adult")
+sexnew <- c("male", "female")
+classnew <- cbind(classnew, agenew, sexnew)
+classnew
+newdata <- cbind(classnew, agenew, sexnew)
+predict(newdata, logModel3)
+newd <- cbind(classnew, agenew, sexnew)
+predict(logModel3, newdata=data.frame(d=newd), type="response")
+plot(predict(logModel3, newdata=data.frame(d=newd), type="response"))
+classnew <- r(1, 1, 2, 2, 3, 3)
+classnew <- c("first", "second", "third", "crew")
+newd <- cbind(classnew, agenew, sexnew)
+plot(predict(logModel3, newdata=data.frame(d=newd), type="response"))
+newd
+plot(predict(logModel3, type="response"))
+plot(predict(logModel3, type="response"))
+mmps(logModel3)
+train = read.table("Challenger.txt", header = T)
+train
+bFail = replace(train$fail, cbind(14, 21), 1)
+bfail
+bFail
+logReg1 = glm(bFail ~ temp, data = train, family = binomial)
+logReg2 = glm(bFail ~ temp + pres, data = train, family = binomial)
+summary(logReg1)
+summary(logReg2)
+Anova(logReg2, type=2)
+anova(logReg2)
+getAIC(logReg2)
+AIC(logReg2)
+train2 = read.table("ChallengerUngrouped.txt", header = T)
+library(MASS)
+lda1 = lda(fail ~ temp + pres, data = train2)
+predict(lda1, data.frame(temp = 31, pres = 50), type = "response")
+Anova(lda1, type=2)
+summary(lda1)
+lda1 = lda(fail ~ temp + pres, data = train2)
+lda1
+predict(logReg1, data.frame(temp = 31), type = "response")
+predict(logReg2, data.frame(temp = 31, pres = 610), type = "response")
+lda1 = lda(fail ~ temp + pres, data = train2)
+lda1
+predict(lda1, data.frame(temp = 31, pres = 50), type = "response")
+qda1 = qda(fail ~ temp + pres, data = train2)
+predict(qda1, data.frame(temp = 31, pres = 610), type = "response")
+set.seed(1)
+knn1 = knn(train2.data, test.data, train2.response, k=1)
+?knn
+??knn
+library(knn)
+load(knn)
+?knn
+??knn
+knn1
+knn
+plot
+library(class)
+set.seed(1)
+knn1 = knn(train2.data, test.data, train2.response, k=1)
+train2.data = cbind(train2$temp, train2$pres)#
+train2.response = train2$fail#
+test.data = data.frame(temp = 31, pres = 610)#
+#
+set.seed(1)#
+knn1 = knn(train2.data, test.data, train2.response, k=1)
+predict(knn1)
+knn1
+?knn
+summary(knn1)
+lda1
+predict(lda1, data.frame(temp = 31, pres = 50), type = "response")
+qda1 = qda(fail ~ temp + pres, data = train2)
+predict(qda1, data.frame(temp = 31, pres = 610), type = "response")
+qda1
+predict(qda1, data.frame(temp = 31, pres = 610), type = "response")
+lda1
+predict(lda1, data.frame(temp = 31, pres = 610), type = "response")
+lda1#
+predict(lda1, data.frame(temp = 31, pres = 610), type = "response")
+qda1#
+predict(qda1, data.frame(temp = 31, pres = 610), type = "response")
+?knn
+train2.data = cbind(train2$temp, train2$pres)#
+train2.response = bFail#
+test.data = data.frame(temp = 31, pres = 610)#
+#
+set.seed(1)#
+knn1 = knn(train2.data, test.data, train2.response, k=1)
+logModel1 <- glm(cbind(surv, m-surv)~classf+agef+sexf, family=binomial, data=titanic)
+summary(logModel1)
+logModel2 <- glm(cbind(surv, m-surv)~classf+agef+sexf+classf*sexf+classf*agef+sexf*agef, family=binomial, data=titanic)
+Anova(logModel2, type=2)
+step(logModel2)
+avPlot(logModel2)
+avPlot(logModel2, variable="age:sex")
+avPlot(logModel2, variable="sex:age")
+avPlot(logModel2, variable="sexf:agef")
+avPlot(logModel2, variable="sexf*agef")
+avPlots(logModel2, variable="sexf*agef")
+avPlots(logModel2)
+warnings()
+avPlots(logModel2)
+avPlots(logModel2u)
+avPlot(logModel2u, "age:sexmale")
+logModel3 <- glm(cbind(surv, m-surv)~classf+agef+sexf+classf*sexf+classf*agef, family=binomial, data=titanic)
+summary(logModel3)
