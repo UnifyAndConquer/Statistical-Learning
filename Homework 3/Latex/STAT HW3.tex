@@ -1,0 +1,191 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[margin=1in]{geometry}			%margins
+\usepackage{indentfirst}					%indentation
+\usepackage{listings}						%code
+\usepackage{amsmath}
+
+\setlength{\intextsep}{15pt plus 1.0pt minus 2.0pt}		%figure spacing inside text
+
+\begin{document}
+
+\title{STAT 239 Homework 3}
+\author{Tarek Tohme}
+\date{May 25th, 2018}
+\maketitle
+
+\section{Theoretical Questions}
+\paragraph{Question 1}
+
+Since \(X^TX\) is diagonal, it is a scaling matrix, therefore its eigenbasis is equal to its basis, hence 
+
+\begin{equation*}
+V^T = V = I \implies X^TX = D^2 \implies x_i^2 = d_i^2 \quad \forall i \in {1,...,p}
+\end{equation*}
+
+Also, \(X^TX\) is full rank, therefore 
+\begin{equation*}
+r=s \implies U \in O(r) \implies \mu_j\mu_j^T = I
+\end{equation*}
+
+\begin{align*}
+Var(x) & = Var\left(\sum_{j=1}^p\mu_j\frac{d_j^2}{d_j^2 + \lambda}\mu_j^TY\right)
+\\
+& = \sum_{j=1}^pVar\left(\mu_j\frac{d_j^2}{d_j^2 + \lambda}\mu_j^TY\right)
+\\
+& = \sum_{j=1}^p\left(\frac{Y^T\mu_j\frac{d_j^2}{d_j^2 + \lambda}\mu_j^T\mu_j\frac{d_j^2}{d_j^2 + \lambda}\mu_j^TY}{N}\right)
+\\
+& = \sum_{j=1}^p\frac{d_j^4}{\left(d_j^2 + \lambda\right)^2}\frac{Y^T\mu_j\mu_j^TY}{N}
+\\
+& = \sum_{j=1}^p\frac{d_j^4}{\left(d_j^2 + \lambda\right)^2}\frac{Y^TY}{N}
+\\
+& = \sigma \sum_{j=1}^p\frac{d_j^4}{\left(d_j^2 + \lambda\right)^2}
+\\
+\\
+B(x) & = \mathbf{E}\left[\hat{F}(x)\right] - \hat{F}(x)
+\\
+& = \mathbf{E}\left[X^T\hat{\beta}_{RR}\right] - X^T\hat{\beta_{RR}}
+\\
+& = \mathbf{E}\left[\sum_{j=1}^p\mu_j\frac{d_j^2}{d_j^2 + \lambda}\mu_j^TY\right] - \sum_{j=1}^p x_i \beta_i
+\\
+& = \sum_{j=1}^p\mathbf{E}\left[\mu_j\frac{d_j^2}{d_j^2 + \lambda}\mu_j^TY\right] - \sum_{j=1}^p x_i \beta_i
+\\
+& = \sum_{j=1}^p x_i \beta_i \left(\frac{d_j^2}{d_j^2 + \lambda} - 1 \right)
+.
+\end{align*}
+since \(\mathbf{E}[\epsilon] = 0, \mathbf{E}[Y] = F(x) = X^T \beta \)
+
+
+\paragraph{Question 2}
+Expressing the problem in Lagrangian form,
+
+\begin{equation*}
+\hat{\beta} = \operatorname*{arg\,min}_\beta \left\{\frac{1}{2}\sum_{i=1}^N\left(y_i - \beta_0 - \sum_{j=1}^p x_{ij} \beta_j \right)^2 + \lambda\sum_{j=1}^p | \beta_j | \right\}
+\end{equation*}
+
+Ignoring \(\beta_0\) and assuming orthogonality, we get
+
+\begin{equation*}
+M = \frac{1}{2}(\beta - \hat{\beta}_{OLS})^T(\beta - \hat{\beta}_{OLS}) + \lambda\sum_{i=1}^p|\beta_j|
+\end{equation*}
+
+For M to be minimal, \(\beta_{Lasso}\) can't be of a different sign than \(\hat{\beta}_{OLS}\) or else \(\left\|\beta - \hat{\beta}_{OLS}\right\|_2\) would not be minimal. \(\left(*\right)\)
+\\
+Fix \(i \in 1,...,p\)
+\\
+\(\mathbf{Case 1:} \quad \beta_{OLSi} > 0 \)
+\\
+\begin{align*}
+M' & = \frac{1}{2}\beta_i^2 - \beta_i \hat{\beta}_{OLSi} + \frac{1}{2}\hat{\beta}_{OLSi}^2 + \lambda \beta_i & Where \quad M = \sum_{i=1}^pM'
+\\
+& = \frac{1}{2}\beta_i^2 - \beta_i \left(\hat{\beta}_{OLSi} - \lambda \right) + \frac{1}{2}\hat{\beta}_{OLSi}^2
+\\
+\frac{\partial M'}{\partial \beta_i} & = \beta_i - \left(\hat{\beta}_{OLSi} - \lambda \right)
+\\
+\end{align*}
+
+Setting the derivative to 0 (which can't be a maximum by the argument given in \(\left(*)\right)\)  gives us 
+\begin{align*}
+\beta_i & = \left(\hat{\beta}_{OLSi} - \lambda \right)^+
+\\
+& = \left(|\hat{\beta}_{OLSi}| - \lambda \right)^+
+\\
+& = \operatorname{sign} \left(\hat{\beta}_{OLSi}\right) \left(|\hat{\beta}_{OLSi}| - \lambda \right)^+
+\\
+\end{align*}
+
+Since \(\hat{\beta}_{OLSi} > 0 \) and \( \hat{\beta}_{OLSi} - \lambda \) must be positive for M' to be as small as possible. \\
+
+\(\mathbf{Case 2:} \quad \beta_{OLSi} < 0 \)
+\\
+\begin{align*}
+M' & = \frac{1}{2}\beta_i^2 - \beta_i \left(\hat{\beta}_{OLSi} + \lambda \right) + \frac{1}{2}\hat{\beta}_{OLSi}^2
+\\
+\frac{\partial M'}{\partial \beta_i}& = 0 \implies \beta_i - \left(\hat{\beta}_{OLSi} + \lambda \right) = 0
+\\
+\beta_i & = \left(\hat{\beta}_{OLSi} + \lambda \right)^+
+\\
+& = \left(-|\hat{\beta}_{OLSi}| + \lambda \right)^+ \quad since \quad \hat{\beta}_{OLSi} < 0
+\\
+& = - \left(|\hat{\beta}_{OLSi}| - \lambda \right)^+
+\\
+& = \operatorname{sign} \left(\hat{\beta}_{OLSi}\right) \left(|\hat{\beta}_{OLSi}| - \lambda \right)^+
+\end{align*}
+\\
+
+\paragraph{Question 3}
+a) Using \(L_2\) loss, \(L_2(y, \hat{F}(x)) = (y - \hat{F}(x))^2 \)
+\begin{align*}
+F & = \operatorname*{arg\,min}_F \left\{L(1, F)*p + L(-1, F)(1-p)\right\}
+\\
+& = \operatorname*{arg\,min}_F \left\{(1-F)^2*p + (-1-F)^2(1-p)\right\}
+\end{align*}
+Setting the derivative with respect to F to zero,
+\begin{align*}
+-2(1-F)*p - 2(-1-F)(1-p) & = 0
+\\
+(-2+2F)*p + (2+2F) -p*(2+2F) & = 0
+\\
+p*(-2+2F-(2+2F)) + 2+2F & = 0
+\\
+-4p + 2 + 2F & = 0
+\\
+F & = 2p-1
+\end{align*}
+
+Replacing p by its estimate
+\begin{equation*}
+\hat{F} = 2\hat{p} - 1 = 2*\frac{1+ay_i}{2} - 1 = ay_i
+\end{equation*}
+b)
+\begin{align*}
+R & = \frac{1}{n}\sum_{i=1}^p \left[\mathbf{E}_{T,Y^*}\left[(y_i-F(x_i))^2 \right]+\left(\mathbf{E}_{T,Y^*}\left[\hat{F}(x_i)\right]-F(x_i)\right)^2+\mathbf{E}_{T,Y^*}\left[\left(\hat{F}(x_i)-\mathbf{E}_{T,Y^*}\left[\hat{F}(x_i)\right]\right)^2\right]\right]
+\end{align*}
+
+\begin{align*}
+\mathbf{E}_{T,Y^*}\left[(y_i-F(x_i))^2 \right] & = \mathbf{E}_{T,Y^*}\left[y_i^2-2y_i(2p_i-1)+(2p_i-1)^2\right]
+\\
+& = \mathbf{E}_{T,Y^*}\left[y_i^2 \right]-2(2p_i-1)\mathbf{E}_{T,Y^*}\left[y_i \right]+(2p_i-1)^2
+\\
+& = 0 -2(2p_i-1)(2p_i-1)+(2p_i-1)^2
+\\
+& = -(2p_i-1)^2
+\end{align*}
+
+\begin{align*}
+\left(\mathbf{E}_{T,Y^*}\left[\hat{F}(x_i)\right]-F(x_i)\right)^2 & = \left(\mathbf{E}_{T,Y^*}\left[ay_i\right]-(2p_i-1)\right)^2
+\\
+& = \left(a(2p_i-1)-(2p_i-1)\right)^2
+\\
+& = \left((2p_i-1)(a-1)\right)^2
+\end{align*}
+
+\begin{equation*}
+\mathbf{E}_{T,Y^*}\left[\left(\hat{F}(x_i)-\mathbf{E}_{T,Y^*}\left[\hat{F}(x_i)\right]\right)^2\right] = -a^2(2p_i-1)^2
+\end{equation*}
+
+\begin{align*}
+R & = \frac{1}{n}\sum_{i=1}^p \left(-(2p_i-1)^2 + \left((2p_i-1)(a-1)\right)^2-a^2(2p_i-1)^2 \right)
+\\
+& = \frac{1}{n}\sum_{i=1}^p\left(-2a(2p_i-1)^2\right)
+\end{align*}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

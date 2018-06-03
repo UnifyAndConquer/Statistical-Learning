@@ -1,227 +1,414 @@
-c(ridge.coefs$beta[,0])
-ridge.coefs$beta[1,1]
-ridge.coefs$beta[100,1]
-ridge.coefs$beta[1,100]
-ridge.coefs$beta[7,100]
-ridge.coefs$beta[1,0]
-ridge.coefs$beta[2,0]
-c(ridge.coefs$beta[1,0])
-ridge.coefs$beta[,0]
-colnames(ridge.coef$beta)
-colnames(ridge.coefs$beta)
-colnames(ridge.coefs$beta[,])
-colnames(ridge.coefs$beta[,0])
-rownames(ridge.coefs$beta)
-ridge.coefs$beta[1,1]
-ridge.coefs$beta[1,100]
-text(x=7.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
-ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
-#
-plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8))#
-for(p in 1:(nrow(ridge.coefs$beta)-1))#
+?which.min
+min = which.min(mean.cv.errors)
+min
+min.stddev = mean.cv.errors[min.index] + stderr[min.index]
+min.index = which.min(mean.cv.errors)
+min.stddev = mean.cv.errors[min.index] + stderr[min.index]
+bestModel = findInterval(min.stddev, mean.cv.errors)
+flipped = max(mean.cv.errors) - mean.cv.errors
+flipped
+bestModel = findInterval(min.stddev, flipped)
+flipped = max(mean.cv.errors) - mean.cv.errors
+bestModel = findInterval(min.stddev, flipped)
+bestModel = which.min(mean.cv.errors[mean.cv.errors>= min.stddev])
+bestModel
+min.stddev
+df.ortho
+df.ortho[bestModel]
+best.index = which.min(mean.cv.errors[mean.cv.errors>= min.stddev])
+best.model = df.ortho[best.index]
+bestModel <- function(x, y, stderr)#
 {#
-	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
-}#
-text(x=7.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
-# coefficients vs degrees of freedom#
-ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
-#
-plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8))#
-for(p in 1:(nrow(ridge.coefs$beta)-1))#
-{#
-	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
-}#
-text(x=8, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
-ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
-#
-plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8))#
-for(p in 1:(nrow(ridge.coefs$beta)-1))#
-{#
-	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
-}#
-text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
-?sum
-shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])
-k = 10#
-folds = sample(1:k, nrow(x.train), replace = TRUE)#
-cv.errors = matrix(NA, k, 100)	# ridge#
-cv.errors2 = matrix(NA, k, 100)  # lasso#
-lam = 10^seq(10, -2, length=100)#
-df = rep(0, length(lam))#
-df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
-shrink = rep(0, length(lam))  # shrinkage factor for lasso#
-d = svd(x.train)$d#
-# compute test error for every value of lambda at every fold#
-for(i in 1:k)#
-{#
-	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
-	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
-	for(l in 1:length(lam))#
-	{#
-		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
-		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
-		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
-		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
-		# compute degrees of freedom for ridge#
-		if(i == 1)#
-		{#
-			for(j in 1:(ncol(x.train) - 1))#
-			{#
-				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
-				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
-			}#
-		}#
-		# compute shrinkage factor for lasso#
-		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])#
-	}#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	best.index = which.min(y[y>= min.stddev])#
+	best.model = x[best.index]#
 }
-length(shrink)
-mean.cv.errors = apply(cv.errors2, 2, mean)
-plot(shrink, mean.cv.errors2)
-# average over folds (columns of cv.error)#
-mean.cv.errors = apply(cv.errors, 2, mean)#
-mean.cv.errors2 = apply(cv.errors2, 2, mean)
-plot(shrink, mean.cv.errors2)
-k = 10#
-folds = sample(1:k, nrow(x.train), replace = TRUE)#
-cv.errors = matrix(NA, k, 100)	# ridge#
-cv.errors2 = matrix(NA, k, 100)  # lasso#
-lam = 10^seq(10, -2, length=100)#
-df = rep(0, length(lam))#
-df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
-shrink = rep(0, length(lam))  # shrinkage factor for lasso#
-d = svd(x.train)$d#
-# compute test error for every value of lambda at every fold#
-for(i in 1:k)#
+bestModel(df.ortho, mean.cv.errors, stderr)
+bestModel <- function(x, y, stderr)#
 {#
-	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
-	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
-	for(l in 1:length(lam))#
-	{#
-		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
-		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
-		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
-		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
-		# compute degrees of freedom for ridge#
-		if(i == 1)#
-		{#
-			for(j in 1:(ncol(x.train) - 1))#
-			{#
-				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
-				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
-			}#
-		}#
-		# compute shrinkage factor for lasso#
-		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])#
-	}#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	best.index = which.min(y[y>= min.stddev])#
+	best.model = x[best.index]#
+	return(best.model)#
 }#
-#
-# average over folds (columns of cv.error)#
-mean.cv.errors = apply(cv.errors, 2, mean)#
-mean.cv.errors2 = apply(cv.errors2, 2, mean)#
-#
-# plot ridge test error vs degrees of freedom#
-plot(df.ortho, mean.cv.errors)#
-plot(df, mean.cv.errors)#
-#
-# plot lasso test error vs shrinkage factor#
-plot(shrink, mean.cv.errors2)
-k = 10#
-folds = sample(1:k, nrow(x.train), replace = TRUE)#
-cv.errors = matrix(NA, k, 100)	# ridge#
-cv.errors2 = matrix(NA, k, 100)  # lasso#
-lam = 10^seq(10, -2, length=100)#
-df = rep(0, length(lam))#
-df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
-shrink = rep(0, length(lam))  # shrinkage factor for lasso#
-d = svd(x.train)$d#
-# compute test error for every value of lambda at every fold#
-for(i in 1:k)#
+bestModel(df.ortho, mean.cv.errors, stderr)
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)
+lasso.best
+?lines
+?abline
+bestModel <- function(x, y, stderr)#
 {#
-	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
-	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
-	for(l in 1:length(lam))#
-	{#
-		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
-		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
-		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
-		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
-		# compute degrees of freedom for ridge#
-		if(i == 1)#
-		{#
-			for(j in 1:(ncol(x.train) - 1))#
-			{#
-				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
-				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
-			}#
-		}#
-		# compute shrinkage factor for lasso#
-		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])#
-	}#
-}#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(a=NULL, b= min.stddev)#
+	best.index = which.min(y[y>= min.stddev])#
+	best.model = x[best.index]#
+	return(best.model)#
+}
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
 #
-# average over folds (columns of cv.error)#
-mean.cv.errors = apply(cv.errors, 2, mean)#
-mean.cv.errors2 = apply(cv.errors2, 2, mean)#
+# find best model according to one-standard-dev rule:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
 #
-# plot ridge test error vs degrees of freedom#
-plot(df.ortho, mean.cv.errors)#
-plot(df, mean.cv.errors)
-plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0, 1.6))
-mean.cv.errors2
-mean.cv.errors
-k = 10#
-folds = sample(1:k, nrow(x.train), replace = TRUE)#
-cv.errors = matrix(NA, k, 100)	# ridge#
-cv.errors2 = matrix(NA, k, 100)  # lasso#
-lam = 10^seq(10, -2, length=100)#
-df = rep(0, length(lam))#
-df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
-shrink = rep(0, length(lam))  # shrinkage factor for lasso#
-d = svd(x.train)$d#
-# compute test error for every value of lambda at every fold#
-for(i in 1:k)#
+# find best model according to one-standard-dev rule:#
+# ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)#
+#
+	min.index = which.min(mean.cv.errors)#
+	min.stddev = mean.cv.errors[min.index] + stderr[min.index]#
+	abline(a = NULL, b = min.stddev)
+abline(0, 1)
+abline(0, 0)
+?abline
+#### plot ridge test error vs degrees of freedom#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+#
+# find best model according to one-standard-dev rule:#
+# ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)#
+#
+	min.index = which.min(mean.cv.errors)#
+	min.stddev = mean.cv.errors[min.index] + stderr[min.index]#
+	abline(h = min.stddev)
+bestModel <- function(x, y, stderr)#
 {#
-	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
-	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
-	for(l in 1:length(lam))#
-	{#
-		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
-		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
-		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
-		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
-		# compute degrees of freedom for ridge#
-		if(i == 1)#
-		{#
-			for(j in 1:(ncol(x.train) - 1))#
-			{#
-				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
-				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
-			}#
-		}#
-		# compute shrinkage factor for lasso#
-		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,0])#
-	}#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(h = min.stddev)#
+	best.index = which.max(y[y<= min.stddev])#
+	best.model = x[best.index]#
+	return(best.model)#
+}
+#### plot ridge test error vs degrees of freedom#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+#
+# find best model according to one-standard-dev rule:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)
+ridge.best
+?which.max
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)
+lasso.best
+bestModel <- function(x, y, stderr)#
+{#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(h = min.stddev)#
+	best.index = which.min(y[y<= min.stddev])#
+	best.model = x[best.index]#
+	return(best.model)#
+}
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+#
+# find best model according to one-standard-dev rule:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)
+ridge.best
+bestModel <- function(x, y, stderr)#
+{#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(h = min.stddev)#
+	best.index = which.max(y[y<= min.stddev])#
+	best.model = x[best.index]#
+	return(best.model)#
+}
+#### plot ridge test error vs degrees of freedom#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+#
+# find best model according to one-standard-dev rule:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)
+ridge.best
+bestModel <- function(x, y, stderr)#
+{#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(h = min.stddev)#
+	best.index = which.min(y[y>= min.stddev])#
+	best.model = x[best.index]#
+	return(best.model)#
+}
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+#
+# find best model according to one-standard-dev rule:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)
+ridge.best
+bestModel <- function(x, y, stderr)#
+{#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(h = min.stddev)#
+	best.index = which.min(y[y>= min.stddev]) + 1#
+	best.model = x[best.index]#
+	return(best.model)#
+}
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+#
+# find best model according to one-standard-dev rule:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)
+ridge.best
+?abline
+bestModel <- function(x, y, stderr)#
+{#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(h = min.stddev, lty=2)#
+	best.index = which.min(y[y>= min.stddev]) + 1#
+	best.model = x[best.index]#
+	return(best.model)#
+}
+#### plot ridge test error vs degrees of freedom#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+#
+# find best model according to one-standard-dev rule:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2)#
+#
+# find best model according to one-standard-dev rule:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)
+lasso.best
+bestModel <- function(x, y, stderr)#
+{#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(h = min.stddev, lty=2)#
+	best.index = which.min(y[y>= min.stddev]) + 1#
+	best.model = x[best.index]#
+	return(c(best.model, best.index))#
+}
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda =
+ridge.best
+lam[85]
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2)#
+#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)
+lasso.best
+lam[90]
+summary(pcr.coefs)
+ols.error
+ols.stderr
+ridge = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+coef(ridge)[,85] # beta vector#
+pred = predict.glmnet(ridge, s=0.6579332, type="coefficients")[1:10]
+?abline
+ridge.error = mean((y.test-pred.y)^2)
+ridge = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+coef(ridge)[,85] # beta vector#
+pred.y = predict.glmnet(ridge, s=0.6579332, newx = x.test)#
+ridge.error = mean((y.test-pred.y)^2)
+ridge.error
+lasso = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+coef(lasso)[,lasso.best[2]] # beta vector#
+pred.y2 = predict.glmnet(lasso, s=lam[lasso.best[2]], newx = x.test)#
+lasso.error = mean((y.test-pred.y2)^2)  # 0.503997
+lasso.error
+#### BOOTSTRAPPED STD ERROR FOR RIDGE#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ridge.boot = glmnet(samples, samples$lpsa, alpha=0, lambda=lam)  # fit linear model on the sample#
+	ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = prostate[prostate$train==F,])  # #
+	bootstrap.ests[i] = mean((y.test - ridge.pred.boot[,1])^2)#
 }#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011
+samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample
+ridge.boot = glmnet(samples, samples$lpsa, alpha=0, lambda=lam)  # fit linear model on the sample
+ridge.boot = glmnet(as.vector(samples), as.vector(samples$lpsa), alpha=0, lambda=lam)  # fit linear model on the sample
+x.train = model.matrix(lpsa ~., prostate[prostate$train==T,])[, -10]
+x.train = model.matrix(lpsa ~., prostate[prostate$train==T,])[, -10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ridge.boot = glmnet(samples, samples$lpsa, alpha=0, lambda=lam)  # fit linear model on the sample#
+	ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = prostate[prostate$train==F,])  # #
+	bootstrap.ests[i] = mean((y.test - ridge.pred.boot[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+x = model.matrix(lpsa ~., prostate[prostate$train==T,])[, -10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ridge.boot = glmnet(samples, samples$lpsa, alpha=0, lambda=lam)  # fit linear model on the sample#
+	ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = prostate[prostate$train==F,])  # #
+	bootstrap.ests[i] = mean((y.test - ridge.pred.boot[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+x
+x = model.matrix(~., prostate[prostate$train==T,])[, -10]
+x
+x = model.matrix(prostate[prostate$train==T,])[, -10]
+x = matrix(prostate[prostate$train==T,][, -10])
+samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample
+x = matrix(prostate[prostate$train==T,][, -10])#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ridge.boot = glmnet(samples, samples$lpsa, alpha=0, lambda=lam)  # fit linear model on the sample#
+	ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = prostate[prostate$train==F,])  # #
+	bootstrap.ests[i] = mean((y.test - ridge.pred.boot[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+?as.vector
+?as.matrix
+x = as.matrix(prostate[prostate$train==T,][, -10])
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ridge.boot = glmnet(samples, samples$lpsa, alpha=0, lambda=lam)  # fit linear model on the sample#
+	ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = prostate[prostate$train==F,])  # #
+	bootstrap.ests[i] = mean((y.test - ridge.pred.boot[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+x
+x = as.matrix(prostate[prostate$train==T,][, -10])#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ridge.boot = glmnet(samples, samples[,9] alpha=0, lambda=lam)  # fit linear model on the sample#
+	ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = prostate[prostate$train==F,])  # #
+	bootstrap.ests[i] = mean((y.test - ridge.pred.boot[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+x = as.matrix(prostate[prostate$train==T,][, -10])#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ridge.boot = glmnet(samples, samples[,9], alpha=0, lambda=lam)  # fit linear model on the sample#
+	ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = prostate[prostate$train==F,])  # #
+	bootstrap.ests[i] = mean((y.test - ridge.pred.boot[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample
+ridge.boot = glmnet(samples, samples[,9], alpha=0, lambda=lam)  # fit linear model on the sample
+ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = prostate[prostate$train==F,])
+test = as.matrix(prostate[prostate$train==F,])
+x = as.matrix(prostate[prostate$train==T,][, -10])#
+test = as.matrix(prostate[prostate$train==F,])#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ridge.boot = glmnet(samples, samples[,9], alpha=0, lambda=lam)  # fit linear model on the sample#
+	ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = test)  # #
+	bootstrap.ests[i] = mean((y.test - ridge.pred.boot[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+test = as.matrix(prostate[prostate$train==F,][, -10])
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ridge.boot = glmnet(samples, samples[,9], alpha=0, lambda=lam)  # fit linear model on the sample#
+	ridge.pred.boot = predict.glmnet(ridge.boot, s=lam[ridge.best[2]], newx = test)  # #
+	bootstrap.ests[i] = mean((y.test - ridge.pred.boot[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+ridge.stderr
+bootstrap.ests
+var(bootstrap.ests)
+var(t(bootstrap.ests))
+x = as.matrix(prostate[prostate$train==T,][, -10])#
+test = as.matrix(prostate[prostate$train==F,][, -10])#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	lasso.boot = glmnet(samples, samples[,9], alpha=1, lambda=lam)  # fit linear model on the sample#
+	lasso.pred.boot = predict.glmnet(lasso.boot, s=lam[lasso.best[2]], newx = test)  # #
+	bootstrap.ests[i] = mean((y.test - lasso.pred.boot[,1])^2)#
+}#
+lasso.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+lasso.stderr
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
 #
-# average over folds (columns of cv.error)#
-mean.cv.errors = apply(cv.errors, 2, mean)#
-mean.cv.errors2 = apply(cv.errors2, 2, mean)#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
 #
-# plot ridge test error vs degrees of freedom#
-plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0, 1.6))#
-plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0, 1.6))#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
 #
-# plot lasso test error vs shrinkage factor#
-plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0, 1.6))
-mean.cv.errors
-mean.cv.errors2
-plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6))#
-plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6))
-shrink
-sum(lasso.coefs$beta[,0])
-shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,100])
-sum(lasso.coefs$beta[,100])
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+library(ISLR)#
+prostate = read.table("prostate.data", header = T)#
+#
+set.seed(42)#
+x.train = model.matrix(lpsa ~., prostate[prostate$train==TRUE,])[, -1]#
+y.train = prostate$lpsa[prostate$train==TRUE]#
+#
+x.test = model.matrix(lpsa ~., prostate[prostate$train==FALSE,])[, -1]#
+y.test = prostate$lpsa[prostate$train==FALSE]#
+library(glmnet)#
+library(rms)#
+library(pls)#
+#
+						#### FUNCTIONS #####
+#
+predict <- function (object, newdata, id, ...)#
+{ #
+	form=as.formula(object$call [[2]]) #
+	mat=model.matrix(form,newdata) #
+	coefi=coef(object ,id=id) #
+	xvars=names(coefi) #
+	mat[,xvars]%*%coefi #
+} #
+#
+bestModel <- function(x, y, stderr)#
+{#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(h = min.stddev, lty=2)#
+	best.index = which.min(y[y>= min.stddev]) + 1#
+	best.model = x[best.index]#
+	return(c(best.model, best.index))#
+}
 k = 10#
 folds = sample(1:k, nrow(x.train), replace = TRUE)#
 cv.errors = matrix(NA, k, 100)	# ridge#
@@ -231,7 +418,7 @@ df = rep(0, length(lam))#
 df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
 shrink = rep(0, length(lam))  # shrinkage factor for lasso#
 d = svd(x.train)$d#
-# compute test error for every value of lambda at every fold#
+#### COMPUTE TEST ERROR FOR EVERY VALUE OF LAMBDA AT EVERY FOLD#
 for(i in 1:k)#
 {#
 	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
@@ -254,300 +441,1277 @@ for(i in 1:k)#
 		# compute shrinkage factor for lasso#
 		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,100])#
 	}#
-}#
+}
+std <- function(x) sqrt(var(x)/length(x))#
 #
-# average over folds (columns of cv.error)#
+stderr = apply(cv.errors, 2, std)#
+stderr2 = apply(cv.errors2, 2, std)#
 mean.cv.errors = apply(cv.errors, 2, mean)#
-mean.cv.errors2 = apply(cv.errors2, 2, mean)#
+mean.cv.errors2 = apply(cv.errors2, 2, mean)
+par(mfrow=c(2,3), cin=1.5, cra=1.5)
+#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
 #
-# plot ridge test error vs degrees of freedom#
-plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6))#
-plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6))#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
 #
-# plot lasso test error vs shrinkage factor#
-plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0, 1.6))
-plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.6))
-plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8))
-#### plot lasso coefficients vs shrinkage factor#
-lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2)#
 #
-plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8))#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751
+par(mfrow=c(2,3), cin=1.5, cra=1.5)
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
 #
-for(p in 2:(nrow(lasso.coefs$beta)-1))#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
 {#
-	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ols.boot = lm(samples$lpsa~., data=samples)  # fit linear model on the sample#
+	ols.pred.boot = predict.lm(ols.boot, prostate[prostate$train==F,], interval="predict")  # #
+	bootstrap.ests[i] = mean((y.test - ols.pred.boot[,1])^2)#
 }#
-text(x=8.1, y=lasso.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
-#### plot lasso coefficients vs shrinkage factor#
-lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
 #
-plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8))#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
 #
-for(p in 2:(nrow(lasso.coefs$beta)-1))#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2)#
+#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751
+?errbar
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
 {#
-	lines(df.ortho, lasso.coefs$beta[p,], type="b", col="blue")#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ols.boot = lm(samples$lpsa~., data=samples)  # fit linear model on the sample#
+	ols.pred.boot = predict.lm(ols.boot, prostate[prostate$train==F,], interval="predict")  # #
+	bootstrap.ests[i] = mean((y.test - ols.pred.boot[,1])^2)#
 }#
-text(x=8.1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
-shrink
-#### plot lasso coefficients vs shrinkage factor#
-lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
 #
-plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8))#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
 #
-for(p in 2:(nrow(lasso.coefs$beta)-1))#
-{#
-	lines(df.ortho, lasso.coefs$beta[p,], type="b", col="blue")#
-}#
-text(x=1.1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
-text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
-#### plot lasso coefficients vs shrinkage factor#
-lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
 #
-plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8))#
-#
-for(p in 2:(nrow(lasso.coefs$beta)-1))#
-{#
-	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue")#
-}#
-text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
-plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6), type="b")#
-plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.6), type="b")
-plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b")#
-plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b")
-plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", lab="bbd")
-plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", label="bbd")
-?plot
-plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom")
-plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor")
-#### plot ridge test error vs degrees of freedom#
-plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom")#
-plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom")#
-#
-#### plot lasso test error vs shrinkage factor#
-plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor")#
-#### plot ridge coefficients vs degrees of freedom#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751
+#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
 ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
 #
-plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients")#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
 #
 for(p in 2:(nrow(ridge.coefs$beta)-1))#
 {#
-	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue")#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
 }#
 text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))#
-#### plot lasso coefficients vs shrinkage factor#
+#### LASSO #
 lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
 #
-plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients")#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
 #
 for(p in 2:(nrow(lasso.coefs$beta)-1))#
 {#
-	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue")#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
 }#
 text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
-plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor")
-pcr.coefs = pcr(lpsa~., x.train[folds!=i,], scale=TRUE, validation="CV")
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ols.boot = lm(samples$lpsa~., data=samples)  # fit linear model on the sample#
+	ols.pred.boot = predict.lm(ols.boot, prostate[prostate$train==F,], interval="predict")  # #
+	bootstrap.ests[i] = mean((y.test - ols.pred.boot[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+?abline
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+abline(h=ols.error, lty=2, col="red")#
+text(x=8, y=ols.error, labels="OLS error")
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+abline(h=ols.error, lty=2, col="red")#
+text(x=8, y=1.05*ols.error, labels="OLS error")#
+summary(pcr.coefs)
+par(mfrow=c(2,3), cin=1.5, cra=1.5, cex=1.3)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ols.boot = lm(samples$lpsa~., data=samples)  # fit linear model on the sample#
+	ols.pred.boot = predict.lm(ols.boot, prostate[prostate$train==F,], interval="predict")  # #
+	bootstrap.ests[i] = mean((y.test - ols.pred.boot[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+abline(h=ols.error, lty=2, col="red")#
+text(x=8, y=1.05*ols.error, labels="OLS error")#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+abline(h=ols.error, lty=2, col="red")#
+text(x=8, y=1.05*ols.error, labels="OLS error")#
+#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+abline(h=ols.error, lty=2, col="red")#
+text(x=8, y=1.05*ols.error, labels="OLS error")#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+abline(h=ols.error, lty=2, col="red")#
+text(x=1, y=1.05*ols.error, labels="OLS error")#
+#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+ridge.best
+mean.cv.error[85]
+mean.cv.errors[85]
+mean.cv.errors[100]
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ols.boot = lm(samples$lpsa~., data=samples)  # fit linear model on the sample#
+	ols.pred.boot = predict.lm(ols.boot, prostate[prostate$train==F,], interval="predict")  # #
+	bootstrap.ests[i] = mean((y.test - ols.pred.boot[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+abline(h=ols.error, lty=2, col="red")#
+text(x=8, y=1.05*ols.error, labels="OLS error")#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+abline(h=ols.error, lty=2, col="red")#
+text(x=2, y=1.05*ols.error, labels="OLS error")#
+#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+abline(h=ols.error, lty=2, col="red")#
+text(x=5, y=1.05*ols.error, labels="OLS error")#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+abline(h=ols.error, lty=2, col="red")#
+text(x=0.1, y=1.05*ols.error, labels="OLS error")#
+#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+x.train
+y.train
+coef(ridge)[,ridge.best[2]] # beta vector
+ridge = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+coef(ridge)[,ridge.best[2]] # beta vector#
+pred.y = predict.glmnet(ridge, s=lam[ridge.best[2]], newx = x.test)#
+ridge.error = mean((y.test-pred.y)^2)  # 0.503997
+ridge.error
+#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], 0.5, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ols.boot = lm(samples$lpsa~., data=samples)  # fit linear model on the sample#
+	ols.pred.boot = predict.lm(ols.boot, prostate[prostate$train==F,], interval="predict")  # #
+	bootstrap.ests[i] = mean((y.test - ols.pred.boot[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta))#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=1, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta))
+?text
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ols.boot = lm(samples$lpsa~., data=samples)  # fit linear model on the sample#
+	ols.pred.boot = predict.lm(ols.boot, prostate[prostate$train==F,], interval="predict")  # #
+	bootstrap.ests[i] = mean((y.test - ols.pred.boot[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta), cex=1.2)#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=1.05, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta), cex=1.2)
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ols.boot = lm(samples$lpsa~., data=samples)  # fit linear model on the sample#
+	ols.pred.boot = predict.lm(ols.boot, prostate[prostate$train==F,], interval="predict")  # #
+	bootstrap.ests[i] = mean((y.test - ols.pred.boot[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8.6), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=8.1, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta), cex=1.2)#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1.1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=1.05, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta), cex=1.2)
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+x <- prostate[prostate$train==T,][,-10]#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	samples <- x[sample(nrow(x), size=nrow(x), replace=TRUE),]  # compute bootstrap sample#
+	ols.boot = lm(samples$lpsa~., data=samples)  # fit linear model on the sample#
+	ols.pred.boot = predict.lm(ols.boot, prostate[prostate$train==F,], interval="predict")  # #
+	bootstrap.ests[i] = mean((y.test - ols.pred.boot[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), type="b", ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), type="b", ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], type="b", col="blue", xlim=c(0,8.6), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=8.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta), cex=1.2)#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], type="b", col="blue", xlim=c(0,1.1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], type="b", col="blue", cex=2)#
+}#
+text(x=1.05, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta), cex=1.2)
 library(pls)
-pcr.coefs = pcr(lpsa~., x.train[folds!=i,], scale=TRUE, validation="CV")
-pcr.coefs = pcr(lpsa~., data=x.train[folds!=i,], scale=TRUE, validation="CV")
-pcr.coefs = pcr(lpsa~., data=as.data.frame(x.train[folds!=i,]), scale=TRUE, validation="CV")
-pcr.coefs = pcr(prostate$lpsa~., data=as.data.frame(x.train[folds!=i,]), scale=TRUE, validation="CV")
-pcr.coefs = pcr(lpsa~., data=prostate[prostate$train==T], scale=TRUE, validation="CV")
-pcr.coefs = pcr(lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-pcr.coefs = pcr(lpsa~., data=prostate[train==T,], scale=TRUE, validation="CV")
+library(ISLR)#
+fix(Hitters)
+pcr.fit=pcr(Salary~., data=Hitters, scale=TRUE, validation="CV")
+x=model.matrix(Salary~., Hitters)[,-1]#
+y=Hitters$Salary
+set.seed(1)
+train=sample(1:nrow(x), nrow(x)/2)
+test=(-train)
+y.test=y[test]
+pcr.pred=predict(pcr.fit, Hitters[test,], ncomp=7)
+pcr.pred
+names(pcr.pred)
+pcr.pred=predict(pcr.fit, frame(Hitters[test,]), ncomp=7)
+pcr.pred=predict(pcr.fit, as.frame(Hitters[test,]), ncomp=7)
+pcr.pred=predict(pcr.fit, data.frame(Hitters[test,]), ncomp=7)
+pcr.pred
+pcr.pred[1]
+pcr.pred[[1]]
+Hitters[test,]
+pcr.pred=predict(pcr.fit, x[test,], ncomp=7)
+pcr.pred=predict(pcr.fit, data.frame(x[test,]), ncomp=7)
+names(pcr.fit)
+pcr.pred=predict(pcr.fit,  ncomp=7)
+?predict.pcr
+?predict
+?predict.mvr
+pcr.pred=predict(pcr.fit)
+pcr.fit=pcr(Salary~., data=Hitters, scale=TRUE, validation="CV")
+predict(pcr.fit)
+pcr.fit=pcr(Salary~., data=Hitters, scale=TRUE, validation="CV")
 ?pcr
-pcr.coefs = pcr(lpsa~., data=prostate, scale=TRUE, validation="CV")
-?index
-pcr.coefs = pcr(lpsa~., data=prostate, subset= scale=TRUE, validation="CV")
-ptrain <- subset(prostate, prostate$train==T)
-pcr.coefs = pcr(lpsa~., data=ptrain, scale=TRUE, validation="CV")
-ptrain
-length(ptrain)
-nrow(ptrain)
-pcr.coefs = pcr(lpsa~., data=ptrain, scale=TRUE, validation="CV")
-?pcr
-set.seed(42)
-ptrain <- subset(prostate, prostate$train==T)
-pcr.coefs = pcr(lpsa~., data=ptrain, scale=TRUE, validation="CV")
-ptrain
-pcr.coefs = pcr(lpsa~., data=prostate, scale=TRUE, validation="CV")
-pcr.coefs = pcr(lpsa~., data=prostate, subset=subset(prostate, prostate$train==T), scale=TRUE, validation="CV")
-pcr.coefs = pcr(lpsa~., data=prostate, subset=prostate[prostate$train==T], scale=TRUE, validation="CV")
-pcr.coefs = pcr(lpsa~., data=prostate, subset=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-pcr.coefs = pcr(lpsa~., data=as.data.frame(ptrain), scale=TRUE, validation="CV")
-prostate
-prostate[prostate$train==T,]
-pcr.coefs = pcr(lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-pcr.coefs = pcr(ptrain$lpsa~., data=ptrain, scale=TRUE, validation="CV")
-ptrain <- subset(prostate, prostate$train==T)
-pcr.coefs = pcr(ptrain$lpsa~., data=ptrain, scale=TRUE, validation="CV")
-pcr.coefs = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-ptrain <- prostate[prostate$train==T,]
-pcr.coefs = pcr(ptrain$lpsa~., data=ptrain, scale=TRUE, validation="CV")
-ptrain = prostate[prostate$train==T,]
-pcr.coefs = pcr(ptrain$lpsa~., data=ptrain, scale=TRUE, validation="CV")
+pcr.fit=pcr(Salary~., data=Hitters)
+predict(pcr.fit)
+pcr.fit=pcr(Salary~., data=Hitters)
+predict(pcr.fit)
+fit=pcr(Salary~., data=Hitters)
+predict(fit)
+fit=pcr(Salary~., data=Hitters[1:200,])
+predict(fit)
+names(fit)
+fit=pcr(Salary~., data=Hitters[1:200,])
+data=Hitters[,c(1:18)]
+fit=pcr(Salary~., data=data)
+head(data)
+fit=pcr(Hitters$Salary~., data=data)
+predict(fit, newdata=cbind(Hitters$Salary, data))
+update.packages()
+library(ISLR)#
+fix(Hitters)#
+library(pls)
+pcr.fit=pcr(Salary~., data=Hitters[1:200,])
+pcr.pred=predict(pcr.fit, Hitters[201:220])
+pcr.pred=predict(pcr.fit, Hitters[201:220,])
+pcr.pred
+?predict.mvr
+pcr.pred$projection
+pcr.fit$projection
+sample = sample(y.test, length(y.test), replace=TRUE)
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((y.test - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011
+ols.stderr
+bootstrap.ests
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274
+ols.pred
+y.test
+y.test = prostate$lpsa[prostate$train==FALSE]
+y.test
+length(y.test)
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((y.test - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011
+ols.stderr
+bootstrap.ests
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011
+ols.stderr
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.011
+ols.stderr
+ridge = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+coef(ridge)[,ridge.best[2]] # beta vector#
+pred.y = predict.glmnet(ridge, s=lam[ridge.best[2]], newx = x.test)#
+ridge.error = mean((y.test-pred.y)^2)  # 0.503997
+ridge.error
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample <- sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ridge.pred[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+ridge = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+coef(ridge)[,ridge.best[2]] # beta vector#
+ridge.pred = predict.glmnet(ridge, s=lam[ridge.best[2]], newx = x.test)#
+ridge.error = mean((y.test-ridge.pred)^2)  # 0.503997
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample <- sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ridge.pred[,1])^2)#
+}#
+ridge.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+ridge.stderr
+lasso = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+coef(lasso)[,lasso.best[2]] # beta vector#
+lasso.pred = predict.glmnet(lasso, s=lam[lasso.best[2]], newx = x.test)#
+lasso.error = mean((y.test-lasso.pred)^2)  # 0.4596582#
+#
+#### BOOTSTRAPPED STD ERROR FOR LASSO#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample <- sample(y.test, length(y.test), replace=TRUE)  # compute bootstrap sample#
+	bootstrap.ests[i] = mean((sample - lasso.pred[,1])^2)#
+}#
+lasso.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)
+lasso.stderr
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274
+ols$coef
+coef(ridge)[,ridge.best[2]] # beta vector
+ridge = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+coef(ridge)[,ridge.best[2]] # beta vector#
+ridge.pred = predict.glmnet(ridge, s=lam[ridge.best[2]], newx = x.test)#
+ridge.error = mean((y.test-ridge.pred)^2)  # 0.503997
+lasso = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+coef(lasso)[,lasso.best[2]] # beta vector#
+lasso.pred = predict.glmnet(lasso, s=lam[lasso.best[2]], newx = x.test)#
+lasso.error = mean((y.test-lasso.pred)^2)  # 0.4596582
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")
 pcr.coefs
 pcr.coefs$beta
-validationplot(pcr.coefs, val.type="MSEP")
-ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])
-ols
-pred.ols = predict(ols, newx = x.test)
-pred.ols = predict(ols, s=0, newx = x.test)
-pred.ols = predict.ols(ols, s=0, newx = x.test)
-pred.ols = predict.glmnet(ols, s=0, newx = x.test)
-pred.ols = predict(ols, prostate[prostate$train==F,], interval="prediction")
-pred.ols = predict(ols, x.test, interval="prediction")
-pred.ols = predict(ols, as.data.frame(x.test), interval="prediction")
-pred.ols = predict(ols, as.data.frame(prostate[prostate$train==F,]), interval="prediction")
-ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])
-summary(ols)
-pred.ols = predict(ols, data.frame(prostate[prostate$train==F,]), interval="prediction")
-pred.ols = predict.lm(ols, data.frame(prostate[prostate$train==F,]), interval="prediction")
-pred.ols
-y.test
-ols.error = mean((y.test-pred.ols)^2)
-ols.error
-pred.ols = predict.lm(ols, data.frame(x.test), interval="prediction")
-ols.error = mean((y.test-pred.ols)^2)
-ols.error
-ols.error = mean((y.test-pred.ols$fit)^2)
-ols.error = mean((y.test-pred.ols[,1])^2)
-ols.error
-validationplot(pcr.coefs, val.type="MSEP")
-?validationplot
+pcr.coefs$projection
+names(pcrtrain)
+for(i in 1:length(names(pcrtrain))-1)
+q
+d
+s
+a
+d
+pcr.coefs$projection[1,1]
+pcr.coefs$coefficients
 ?pcr
-pcr.coefs$terms
-?pcr
-coef(pcr.coefs)
-summary(pcr.coefs)
-pcr.pred = predict(pcr.coefs, x.test, ncomp=8)
-pcr.pred = predict(pcr.coefs, data.frame(x.test), ncomp=8)
-pcr.pred = predict.pcr(pcr.coefs, data.frame(x.test), ncomp=8)
-pcr.pred = predict(pcr.coefs, data.frame(x.test), ncomp=8)
-pcr.pred = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=8)
-pcr.pred
-pcr.pred = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=7)
-pcr.pred
-pcr.pred = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=8)
-pcr.error = mean((y.test-pred.pcr)^2)
-pred.pcr = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=8)
-pcr.error = mean((y.test-pred.pcr)^2)
-pcr.error
-pred.pcr = predict(pcr.coefs, prostate[prostate$train==T,], ncomp=1)
-pred.pcr
-summary(pcr)
-summary(pcr.coefs)
-pred.pcr = predict(pcr.coefs, data.frame(x.test), ncomp=8)
-pred.ols = predict.lm(ols, data.frame(x.test), interval="prediction")
-pred.pcr = predict.mvr(pcr.coefs, data.frame(x.test), ncomp=8)
-?predict
-pred.pcr = predict(pcr.coefs, type="response", newdata=prostate[prostate$train==T,], ncomp=8)
-pcr.error = mean((y.test-pred.pcr)^2)
-pcr.error
-pred.pcr
-summary(pcr.coefs)
-pred.pcr = predict(pcr.coefs, newdata=prostate[prostate$train==F,], ncomp=8)
-pred.pcr = predict(pcr.coefs, data.frame(x.train), ncomp=8)
-pred.pcr = predict(pcr.coefs, data.frame(x.test), ncomp=8)
-x.test
-x.train
-pred.pcr = predict(pcr.coefs, data.frame(x.test), interval="prediction", ncomp=8)
-pred.pcr = predict(pcr.coefs, newdata=data.frame(x.test), interval="prediction", ncomp=8)
-pcr = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-validationplot(pcr, val.type="MSEP")
-pred.pcr = predict(pcr, newdata=data.frame(x.test), interval="prediction", ncomp=8)
-pred.pcr = predict(pcr, newdata=data.frame(x.test), interval="prediction", ncomp=9)
-pred.ols = predict(ols, data.frame(x.test), interval="prediction")
-pred.ols = predict.lm(ols, data.frame(x.test), interval="prediction")
-pred.pcr = predict.lm(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-pred.pcr = predict.pcr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-pred.pcr = predict.pls(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-pred.pcr = predict.glmnet(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-pred.pcr = predict.lm(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-pred.pcr = predict.pcr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-?pcr
-pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-?pcr
-?predict.mvr
-pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-pcr = mvr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-?predict.mvr
-predict.mvr
-?predict.mvr
-pcr = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")#
-validationplot(pcr, val.type="MSEP")#
-summary(pcr)#
-pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)#
-pcr.error = mean((y.test-pred.pcr)^2)
-library(pls)
-pcr = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")#
-validationplot(pcr, val.type="MSEP")#
-summary(pcr)#
-pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)#
-pcr.error = mean((y.test-pred.pcr)^2)
-?predict.mvr
-pcr.mvr <- pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-pred.pcr = predict.mvr(pcr.mvr, data.frame(x.test), interval="prediction", ncomp=8)
-pcr
-predict
-predict.lm
-predict.mvr
-require(pls)
-predict.mvr
-library(pls)
-predict.mvr
-?predict.mvr
-pcr = pcr(data.frame(y.train)~., data=data.frame(x.train), scale=TRUE, validation="CV")
-dat <- prostate[prostate$train==T,]
-y <- prostate[prostate$train==T,]$lpsa
-pcr = pcr(y~., data=dat, scale=TRUE, validation="CV")
-pcr = pcr(y~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-pcr = pcr(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-pcr = pcr(lpsa~., data=prostate[prostate$train==T,], scale=TRUE, validation="CV")
-pcr = pcr(lpsa~., data=prostate, scale=TRUE, validation="CV")
-ptrain = data.frame(prostate[prostate$train==T,])
-pcr = pcr(lpsa~., data=ptrain, scale=TRUE, validation="CV")
-pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-pcr = pcr(lpsa~., data=prostate, scale=TRUE, validation="CV")
-pred.pcr = predict.mvr(pcr, data.frame(x.test), interval="prediction", ncomp=8)
-pred.pcr = predict.mvr(pcr, prostate[prostate$train==T,], interval="prediction", ncomp=8)
-pred.pcr = predict(pcr, prostate[prostate$train==T,], interval="prediction", ncomp=8)
-pred.pcr
-sessionInfo()
-pls
-search()
-search(package:stats)
-search("package:stats")
-?search
-ls
-ls(package:stats)
-library(pls)
-detach(pls)
-?detach
-detach(MASS)
-detach("pls")
-detach(xtabs)
-detach(name=xtabs)
-ols = lm(prostate[prostate$train==T,]~., data=prostate[prostate$train==T,])
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.210#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="b")#
+# pcr.coefs$projection#
+# pcr.coefs$coefficients#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2)#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], col="blue", xlim=c(0,8.6), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=8.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta), cex=1.2)#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], col="blue", xlim=c(0,1.1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=1.05, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta), cex=1.2)
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.210#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="l")#
+# pcr.coefs$projection#
+# pcr.coefs$coefficients#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2, type="l")#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2)#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2, type="l")#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], col="blue", xlim=c(0,8.6), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients", type="l")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=8.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta), cex=1.2)#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], col="blue", xlim=c(0,1.1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients", type="l")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=1.05, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta), cex=1.2)
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.210#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="l")#
+# pcr.coefs$projection#
+# pcr.coefs$coefficients#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2, type="l")#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2, type="l")#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2, type="l")#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], col="blue", xlim=c(0,8.6), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients", type="l")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=8.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta), cex=1.2)#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], col="blue", xlim=c(0,1.1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients", type="l")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=1.05, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta), cex=1.2)
 library(ISLR)#
-prostate = read.table("prostate.data", header = T)
-ols = lm(prostate[prostate$train==T,]~., data=prostate[prostate$train==T,])
-ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])
-ols.pred = predict.lm(ols, data.frame(y.test), interval="predict")
+prostate = read.table("prostate.data", header = T)#
+#
 set.seed(42)#
 x.train = model.matrix(lpsa ~., prostate[prostate$train==TRUE,])[, -1]#
 y.train = prostate$lpsa[prostate$train==TRUE]#
 #
 x.test = model.matrix(lpsa ~., prostate[prostate$train==FALSE,])[, -1]#
-y.test = prostate$lpsa[prostate$train==FALSE]
-ols.pred = predict.lm(ols, data.frame(y.test), interval="predict")
-ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")
-ols.errors = mean((y.test - ols.pred)^2)
-ols.errors
-ols.errors = mean((y.test - ols.pred[1])^2)
-ols.errors
-ols.pred
-y.test
-ols.errors = mean((y.test - ols.pred[,1])^2)
-ols.errors
+y.test = prostate$lpsa[prostate$train==FALSE]#
+library(glmnet)#
+library(rms)#
+library(pls)
+#### FUNCTIONS #####
+#
+predict <- function (object, newdata, id, ...)#
+{ #
+	form=as.formula(object$call [[2]]) #
+	mat=model.matrix(form,newdata) #
+	coefi=coef(object ,id=id) #
+	xvars=names(coefi) #
+	mat[,xvars]%*%coefi #
+} #
+#
+bestModel <- function(x, y, stderr)#
+{#
+	min.index = which.min(y)#
+	min.stddev = y[min.index] + stderr[min.index]#
+	abline(h = min.stddev, lty=2)#
+	best.index = which.min(y[y>= min.stddev]) + 1#
+	best.model = x[best.index]#
+	return(c(best.model, best.index))#
+}
+k = 10#
+folds = sample(1:k, nrow(x.train), replace = TRUE)#
+cv.errors = matrix(NA, k, 100)	# ridge#
+cv.errors2 = matrix(NA, k, 100)  # lasso#
+lam = 10^seq(10, -2, length=100)#
+df = rep(0, length(lam))#
+df.ortho = rep(0, length(lam))  # divide OLS coefficients by 1+lambda#
+shrink = rep(0, length(lam))  # shrinkage factor for lasso#
+d = svd(x.train)$d#
+#### COMPUTE TEST ERROR FOR EVERY VALUE OF LAMBDA AT EVERY FOLD#
+for(i in 1:k)#
+{#
+	ridge.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=0, lambda=lam)#
+	lasso.coefs = glmnet(x.train[folds!=i,], y.train[folds!=i], alpha=1, lambda=lam)#
+	for(l in 1:length(lam))#
+	{#
+		pred = predict.glmnet(ridge.coefs, s=lam[l], newx=x.train[folds==i,])  # ridge#
+		pred2 = predict.glmnet(lasso.coefs, s=lam[l], newx=x.train[folds==i,])  # lasso#
+		cv.errors[i,l] = mean((y.train[folds==i] - t(pred))^2)#
+		cv.errors2[i,l] = mean((y.train[folds==i] - t(pred2))^2)#
+		# compute degrees of freedom for ridge#
+		if(i == 1)#
+		{#
+			for(j in 1:(ncol(x.train) - 1))#
+			{#
+				df[l] = df[l] + d[j]^2 / (d[j]^2 + lam[l])#
+				df.ortho[l] = df.ortho[l] + 1 / (1 + lam[l])#
+			}#
+		}#
+		# compute shrinkage factor for lasso#
+		shrink[l] = sum(lasso.coefs$beta[,l]) / sum(lasso.coefs$beta[,100])#
+	}#
+}
+std <- function(x) sqrt(var(x)/length(x))#
+#
+stderr = apply(cv.errors, 2, std)#
+stderr2 = apply(cv.errors2, 2, std)#
+mean.cv.errors = apply(cv.errors, 2, mean)#
+mean.cv.errors2 = apply(cv.errors2, 2, mean)
+pdf("plots.pdf")#
+par(mfrow=c(2,3), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.210#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="l")#
+# pcr.coefs$projection#
+# pcr.coefs$coefficients#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2, type="l")#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2, type="l")#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2, type="l")#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], col="blue", xlim=c(0,8.6), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients", type="l")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=8.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta), cex=1.2)#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], col="blue", xlim=c(0,1.1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients", type="l")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=1.05, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta), cex=1.2)#
+#
+dev.off()
+pdf("plots.pdf")#
+par(mfrow=c(3,2), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.210#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="l")#
+# pcr.coefs$projection#
+# pcr.coefs$coefficients#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2, type="l")#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2, type="l")#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X matrix)", xlab="shrinkage factor", main="Lasso", cex=2, type="l")#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], col="blue", xlim=c(0,8.6), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X matrix)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients", type="l")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=8.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta), cex=1.2)#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], col="blue", xlim=c(0,1.1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients", type="l")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=1.05, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta), cex=1.2)#
+#
+dev.off()
+pdf("plots.pdf")#
+# par(mfrow=c(3,2), cin=1.5, cra=1.5)#
+	#### OLS TEST ERROR AND BOOTSTRAPPED STANDARD ERROR#
+ols = lm(prostate[prostate$train==T,]$lpsa~., data=prostate[prostate$train==T,])#
+ols.pred = predict.lm(ols, prostate[prostate$train==F,], interval="predict")#
+ols.error = mean((y.test - ols.pred[,1])^2)  # 0.521274#
+#
+B=1000#
+bootstrap.ests = matrix(NA, 1, B)#
+for(i in 1:B)#
+{#
+	sample = sample(y.test, length(y.test), replace=TRUE)#
+	bootstrap.ests[i] = mean((sample - ols.pred[,1])^2)#
+}#
+ols.stderr = (1/(B-1)) * sum((bootstrap.ests-mean(bootstrap.ests))^2)  # 0.210#
+	#### PCR PLOT#
+pcrtrain <- prostate[prostate$train==T,][,-10]#
+y <- pcrtrain$lpsa#
+pcr.coefs = pcr(y~., data=pcrtrain, scale=TRUE, validation="CV")#
+validationplot(pcr.coefs, val.type="MSEP", main="Principal Components Regression", cex=2, type="l")#
+# pcr.coefs$projection#
+# pcr.coefs$coefficients#
+summary(pcr.coefs)#
+	#### RIDGE TEST ERROR VS DEGREES OF FREEDOM#
+#### ASSUMING ORTHOGONAL X#
+plot(df.ortho, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error (assuming orthogonal X matrix)", xlab="degrees of freedom", main="Ridge Regression", cex=2, type="l")#
+errbar(df.ortho, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+ridge.best = bestModel(df.ortho, mean.cv.errors, stderr)  # 4.825485 degrees of freedom --> lambda = lam[85] = 0.6579332#
+#
+#### NOT ASSUMING ORTHOGONAL X#
+plot(df, mean.cv.errors, xlim=c(0,8), ylim=c(0.5, 1.8), ylab="ridge test error", xlab="degrees of freedom", main="Ridge Regression", cex=2, type="l")#
+errbar(df, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)#
+	#### LASSO TEST ERROR VS SHRINKAGE FACTOR#
+plot(shrink, mean.cv.errors2, xlim=c(0,1), ylim=c(0.5, 1.8), ylab="lasso test error (assuming orthogonal X)", xlab="shrinkage factor", main="Lasso", cex=2, type="l")#
+errbar(shrink, mean.cv.errors2, yplus=mean.cv.errors2+stderr2, yminus=mean.cv.errors2-stderr2, add=TRUE)#
+#### FIND BEST MODEL ACCORDING TO ONE-STANDARD-DEV RULE:#
+lasso.best = bestModel(shrink, mean.cv.errors2, stderr2)  # 0.7023819 shrinkage factor --> lambda = lam[90] = 0.1629751#
+	#### COEFFICIENTS VS DEGREES OF FREEDOM#
+#### RIDGE#
+ridge.coefs = glmnet(x.train, y.train, alpha=0, lambda=lam)#
+#
+plot(df.ortho, ridge.coefs$beta[1,], col="blue", xlim=c(0,8.6), ylim=c(-0.3, 0.8), xlab="degrees of freedom (assuming orthogonal X)", ylab="ridge coefficients", cex=2, main="Ridge Coefficients", type="l")#
+abline(v=ridge.best[1], lty=2)#
+text(x=1.1*ridge.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(ridge.coefs$beta)-1))#
+{#
+	lines(df.ortho, ridge.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=8.5, y=ridge.coefs$beta[,100], labels=rownames(ridge.coefs$beta), cex=1.2)#
+#### LASSO #
+lasso.coefs = glmnet(x.train, y.train, alpha=1, lambda=lam)#
+#
+plot(shrink, lasso.coefs$beta[1,], col="blue", xlim=c(0,1.1), ylim=c(-0.3, 0.8), xlab="shrinkage factor", ylab="lasso coefficients", cex=2, main="Lasso Coefficients", type="l")#
+abline(v=lasso.best[1], lty=2)#
+text(x=1.1* lasso.best[1], -0.2, labels="Best Model")#
+#
+for(p in 2:(nrow(lasso.coefs$beta)-1))#
+{#
+	lines(shrink, lasso.coefs$beta[p,], col="blue", cex=1)#
+}#
+text(x=1.05, y=lasso.coefs$beta[,100], labels=rownames(lasso.coefs$beta), cex=1.2)#
+#
+dev.off()
