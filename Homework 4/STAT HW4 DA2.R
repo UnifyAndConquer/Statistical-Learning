@@ -131,7 +131,7 @@ try = tuneRF(x = x.train, y = as.factor(y.train), mtryStart = 1, ntreeTry = 1000
 rf.model2 = randomForest(as.factor(y) ~., data=train, importance = T, mtry = 1)
 rf.pred2 = predict(rf.model2, newdata = test, type="response")
 t2 = table(rf.pred2, y.test)
-error2 = (t2[1,1] + t2[2,2])/(sum(t))
+error2 = (t2[1,1] + t2[2,2])/(sum(t2))
 error2 # 0.9765625
 
 varImpPlot(rf.model2)
@@ -143,13 +143,60 @@ partialPlot(rf.model2, pred.data=train, x.var=impvar[1])
 #### BOOSTED TREES ####
 
 train$y = train$y - 1
-boost.model = gbm(y ~., data=train, distribution = "bernoulli", n.trees = 5000, interaction.depth = 4, shrinkage = 0.01, cv.folds = 10)
-summary(boost.model)
 
-cvp4 = gbm.perf(boost.model, method="cv") # optimal M for order of interaction  4
+set.seed(9)
+boost.model4 = gbm(y ~., data=train, distribution = "bernoulli", n.trees = 5000, interaction.depth = 4, shrinkage = 0.01, cv.folds = 10)
+summary(boost.model4)
+cvp4 = gbm.perf(boost.model4, method="cv") # optimal M for order of interaction  4
 
-## TODO
-# make plot that compares test error for each technique as function of number of trees grown.
-# add lines for lasso and SVM
+boost.model3 = gbm(y ~., data=train, distribution = "bernoulli", n.trees = 5000, interaction.depth = 3, shrinkage = 0.01, cv.folds = 10)
+cvp3 = gbm.perf(boost.model3, method="cv") # optimal M for order of interaction  3
+
+boost.model2 = gbm(y ~., data=train, distribution = "bernoulli", n.trees = 5000, interaction.depth = 2, shrinkage = 0.01, cv.folds = 10)
+cvp2 = gbm.perf(boost.model2, method="cv") # optimal M for order of interaction  2
+
+boost.model1 = gbm(y ~., data=train, distribution = "bernoulli", n.trees = 5000, interaction.depth = 1, shrinkage = 0.01, cv.folds = 10)
+cvp1 = gbm.perf(boost.model1, method="cv") # optimal M for order of interaction  1
+
+plot(boost.model4$cv.error, col="green", type="l")
+lines(boost.model3$cv.error, col="blue", type="l")
+lines(boost.model2$cv.error, col="red", type="l")
+lines(boost.model1$cv.error, col="black", type="l")
+
+# stumps seem to be the best base learners.
+
+test$y = test$y - 1
+
+set.seed(9)
+boost.pred1 = predict(boost.model1, newdata=test, n.trees = cvp1, type="response")
+boost.pred1 = round(boost.pred1, 0)
+t3.1 = table(boost.pred1, test$y)
+error3.1 = (t3.1[1,1] + t3.1[2,2])/(sum(t3.1))
+error3.1  # 0.9296875
+
+set.seed(10)
+boost.pred2 = predict(boost.model2, newdata=test, n.trees = cvp1, type="response")
+boost.pred2 = round(boost.pred2, 0)
+t3.2 = table(boost.pred2, test$y)
+error3.2 = (t3.2[1,1] + t3.2[2,2])/(sum(t3.2))
+error3.2  # 0.953125
+
+set.seed(11)
+boost.pred3 = predict(boost.model3, newdata=test, n.trees = cvp1, type="response")
+boost.pred3 = round(boost.pred3, 0)
+t3.3 = table(boost.pred, test$y)
+error3.3 = (t3.3[1,1] + t3.3[2,2])/(sum(t3.3))
+error3.3  # 0.9296875
+
+set.seed(12)
+boost.pred4 = predict(boost.model4, newdata=test, n.trees = cvp1, type="response")
+boost.pred4= round(boost.pred4, 0)
+t3.4 = table(boost.pred4, test$y)
+error3.4 = (t3.4[1,1] + t3.4[2,2])/(sum(t3.4))
+error3.4  # 0.9453125
+
+
+#### SVM ####
+
 
 
