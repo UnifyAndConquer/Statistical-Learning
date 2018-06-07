@@ -9,15 +9,18 @@ library(pls)
 library(tree)
 library(randomForest)
 library(gbm)
+library(e1071)
 
 
 set.seed(42)
 train = read.table("train.txt", header = T)
 test = read.table("test.txt", header = T)
 x.train = model.matrix(y ~., train)
+train$y = train$y - 1
 y.train = train$y
 
 x.test = model.matrix(y ~., test)
+test$y = test$y - 1
 y.test = test$y
 
 lam = 10^seq(10, -2, length=100)
@@ -61,6 +64,7 @@ pred.y = predict.glmnet(ridge, s=1, newx = x.test)
 
 
                   #### MODEL COMPARISON ####
+#### LASSO ####
 
 k = 10
 folds = sample(1:k, nrow(x.train), replace = T)
@@ -86,36 +90,18 @@ std <- function(x) sqrt(var(x)/length(x))
 stderr = apply(cv.errors, 2, std)
 mean.cv.errors = apply(cv.errors, 2, mean)
 
-plot(shrink, mean.cv.errors, xlim=c(0,1), ylim=c(0.05, 0.3), ylab="lasso test error (assuming orthogonal X)", xlab="shrinkage factor", main="Lasso", cex=2, type="l")
+plot(shrink, mean.cv.errors, xlim=c(0,1), ylim=c(0.05, 0.3), ylab="lasso CV error (assuming orthogonal X)", xlab="shrinkage factor", main="Lasso CV error VS shrinkage", cex=2, type="l")
 errbar(shrink, mean.cv.errors, yplus=mean.cv.errors+stderr, yminus=mean.cv.errors-stderr, add=TRUE)
 
-lasso.best = min(mean.cv.errors) ##  0.08517907
+lasso.best = min(mean.cv.errors) ##  0.08797778
 bestS = shrink[which.min(mean.cv.errors)]
 abline(v = bestS, lty=2)
 
-#### COMPUTING TEST ERROR ####
-
+# Lasso test error
 lasso = glmnet(x.train, y.train, alpha = 1, lambda = lam)
 lasso.pred = predict.glmnet(lasso, s=lam[which.min(mean.cv.errors)], newx = x.test)
 lasso.pred = round(lasso.pred, digits = 0)
-table(lasso.pred, y.test)
-# (64+58)/(64+58+4+2) = 0.953125
-
-#### TREE ####
-
-par(mfrow=c(1, 1))
-
-tree.train = tree(as.factor(y) ~., train)
-plot(tree.train)
-text(tree.train, pretty=0)
-summary(tree.train)
-tree.train
-
-cv = cv.tree(tree.train)
-
-prune = prune.misclass(tree.train, best = 3)
-plot(prune)
-text(prune, pretty=0)
+lo.testerr = sum(lasso.pred != y.test)  # number of misclassifications for the best Lasso model on the test set
 
 #### RANDOM FOREST ####
 
@@ -128,11 +114,10 @@ error # 0.9453125
 
 try = tuneRF(x = x.train, y = as.factor(y.train), mtryStart = 1, ntreeTry = 1000) # 1 is best number of variables to select
 
+# Random forest test error
 rf.model2 = randomForest(as.factor(y) ~., data=train, importance = T, mtry = 1)
 rf.pred2 = predict(rf.model2, newdata = test, type="response")
-t2 = table(rf.pred2, y.test)
-error2 = (t2[1,1] + t2[2,2])/(sum(t2))
-error2 # 0.9765625
+rf.testerr = sum(rf.pred2 != y.test) # number of misclassifications for random forest with m = 1 on the test set
 
 varImpPlot(rf.model2)
 imp <- importance(rf.model2)
@@ -142,61 +127,174 @@ partialPlot(rf.model2, pred.data=train, x.var=impvar[1])
 
 #### BOOSTED TREES ####
 
-train$y = train$y - 1
-
 set.seed(9)
 boost.model4 = gbm(y ~., data=train, distribution = "bernoulli", n.trees = 5000, interaction.depth = 4, shrinkage = 0.01, cv.folds = 10)
 summary(boost.model4)
-cvp4 = gbm.perf(boost.model4, method="cv") # optimal M for order of interaction  4
+cvp4 = gbm.perf(boost.model4, method="cv") # order of interaction  4
 
 boost.model3 = gbm(y ~., data=train, distribution = "bernoulli", n.trees = 5000, interaction.depth = 3, shrinkage = 0.01, cv.folds = 10)
-cvp3 = gbm.perf(boost.model3, method="cv") # optimal M for order of interaction  3
+cvp3 = gbm.perf(boost.model3, method="cv") # order of interaction  3
 
 boost.model2 = gbm(y ~., data=train, distribution = "bernoulli", n.trees = 5000, interaction.depth = 2, shrinkage = 0.01, cv.folds = 10)
-cvp2 = gbm.perf(boost.model2, method="cv") # optimal M for order of interaction  2
+cvp2 = gbm.perf(boost.model2, method="cv") # order of interaction  2
 
 boost.model1 = gbm(y ~., data=train, distribution = "bernoulli", n.trees = 5000, interaction.depth = 1, shrinkage = 0.01, cv.folds = 10)
-cvp1 = gbm.perf(boost.model1, method="cv") # optimal M for order of interaction  1
+cvp1 = gbm.perf(boost.model1, method="cv") # order of interaction  1
 
 plot(boost.model4$cv.error, col="green", type="l")
 lines(boost.model3$cv.error, col="blue", type="l")
 lines(boost.model2$cv.error, col="red", type="l")
 lines(boost.model1$cv.error, col="black", type="l")
 
-# stumps seem to be the best base learners.
+min(boost.model4$cv.error)
+min(boost.model3$cv.error)
+min(boost.model2$cv.error)
+min(boost.model1$cv.error)  # <--- smallest
 
-test$y = test$y - 1
+which.min(boost.model1$cv.error)  # = cvp1 = 1148
+
+# stumps seem to be the best base learners.
 
 set.seed(9)
 boost.pred1 = predict(boost.model1, newdata=test, n.trees = cvp1, type="response")
 boost.pred1 = round(boost.pred1, 0)
-t3.1 = table(boost.pred1, test$y)
-error3.1 = (t3.1[1,1] + t3.1[2,2])/(sum(t3.1))
-error3.1  # 0.9296875
-
-set.seed(10)
-boost.pred2 = predict(boost.model2, newdata=test, n.trees = cvp1, type="response")
-boost.pred2 = round(boost.pred2, 0)
-t3.2 = table(boost.pred2, test$y)
-error3.2 = (t3.2[1,1] + t3.2[2,2])/(sum(t3.2))
-error3.2  # 0.953125
-
-set.seed(11)
-boost.pred3 = predict(boost.model3, newdata=test, n.trees = cvp1, type="response")
-boost.pred3 = round(boost.pred3, 0)
-t3.3 = table(boost.pred, test$y)
-error3.3 = (t3.3[1,1] + t3.3[2,2])/(sum(t3.3))
-error3.3  # 0.9296875
-
-set.seed(12)
-boost.pred4 = predict(boost.model4, newdata=test, n.trees = cvp1, type="response")
-boost.pred4= round(boost.pred4, 0)
-t3.4 = table(boost.pred4, test$y)
-error3.4 = (t3.4[1,1] + t3.4[2,2])/(sum(t3.4))
-error3.4  # 0.9453125
+bt.testerr = sum(boost.pred1 != y.test) # number of misclassifications for Boosted Trees with M = 1 on the test set
 
 
 #### SVM ####
+## Polynomial kernel
+
+## determining the best value for the Cost C by CV
+K = 10
+C = 10^seq(10, -2, length=100)
+folds = sample(1:K, nrow(x.train), replace = TRUE)
+cv.errors = matrix(NA, K, length(C))
+cv.errs = rep(C)
+
+for(k in 1:K)
+{
+  for(c in 1:length(C))
+  {
+    svm.model = svm(y ~ ., data = train[folds!=k,], kernel = "polynomial", degree = 1, type = "C", cost = c)
+    svm.pred = predict(svm.model, newdata = train[folds==k,])
+    cv.errors[k, c] = sum(svm.pred != y.train[folds==k])
+  }
+}
+cv.errs = apply(cv.errors, 2, mean)
+bestC = C[which.min(cv.errs)]
+min(cv.errs)
+bestC
+
+#### CV error VS cost for polynomial SVM of degree 1
+plot(log(C), cv.errs, type="l", main = "CV error VS log(cost) for polynomial SVM of degree 1")
+abline(v = log(bestC), lty=2)
+
+## determining the best value for the polynomial degree by CV
+K = 10
+P = 8
+folds = sample(1:K, nrow(x.train), replace = TRUE)
+cv.errors2 = matrix(NA, K, P)
+cv.errs2 = rep(P)
+
+for(k in 1:K)
+{
+  for(p in 1:P)
+  {
+    svm.model = svm(y ~ ., data = train[folds!=k,], kernel = "polynomial", degree = p, type = "C", cost = bestC)
+    svm.pred = predict(svm.model, newdata = train[folds==k,])
+    cv.errors2[k, p] = sum(svm.pred != y.train[folds==k])
+  }
+}
+cv.errs2 = apply(cv.errors2, 2, mean)
+min(cv.errs2) # = 1.8 ---> polynomial degree 3
 
 
+svm.model3 = svm(y ~ ., data = train, kernel = "polynomial", degree = 3, type = "C", cost = bestC)
+svm.pred3 = predict(svm.model3, newdata=test)
+svm.testerr3 = sum(svm.pred3 != test$y) # number of misclassifications by svm polynomial kernel degree 3 on the test set
 
+
+## Radial Kernel
+
+K = 10
+C = 10^seq(10, -2, length=100)
+folds = sample(1:K, nrow(x.train), replace = TRUE)
+cv.errors2 = matrix(NA, K, length(C))
+cv.errs2 = rep(C)
+
+for(k in 1:K)
+{
+  for(c in 1:length(C))
+  {
+    svm.model = svm(y ~ ., data = train[folds!=k,], kernel = "radial", type = "C", cost = c)
+    svm.pred = predict(svm.model, newdata = train[folds==k,])
+    cv.errors2[k, c] = sum(svm.pred != y.train[folds==k])
+  }
+}
+
+cv.errs2 = apply(cv.errors2, 2, mean)
+bestC2 = C[which.min(cv.errs2)]
+min(cv.errs2)
+
+svm.model4 = svm(y ~ ., data = train, kernel = "radial", type = "C", cost = bestC2)
+svm.pred4 = predict(svm.model4, newdata = test)
+svm.testerr4 = sum(svm.pred4 != y.test) # number of misclassifications by svm radial kernel on the test set
+
+#### CV ERROR PLOTS FOR RF AND BT ####
+
+K = 10  # CV folds
+R = 2000  # number of trees to try RF and Boosting on
+folds = sample(1:K, nrow(x.train), replace = T)
+rf.error = matrix(NA, K, R)
+bt.error = matrix(NA, K, R)
+rf.err = rep(NA, R)
+bt.err = rep(NA, R)
+
+for(r in 1:R)
+{
+  for(k in 1:K)
+  {
+    rf.model2 = randomForest(as.factor(y) ~., data=train[folds!=k,], importance = TRUE, mtry = 1, ntree = r)
+    rf.pred2 = predict(rf.model2, newdata = train[folds==k,], type="response")
+    rf.error[k, r] = sum(rf.pred2 != y.train[folds==k])
+    
+    boost.model1 = gbm(y ~., data=train[folds!=k,], distribution = "bernoulli", n.trees = r, interaction.depth = 1, shrinkage = 0.01)
+    boost.pred1 = predict(boost.model1, newdata=train[folds==k,], n.trees = r, type="response")
+    boost.pred1 = round(boost.pred1, 0)
+    bt.error[k, r] = sum(boost.pred1 != y.train[folds==k])
+  }
+}
+
+bt.err = apply(bt.error, 2, mean)
+rf.err = apply(rf.error, 2, mean)
+
+# Boosting and Random Forest
+plot(1:R, rf.err, type = "l", ylab="average number of misclassifications", xlab = "number of trees", main = "CV error comparison of RF and GBM")
+lines(1:R, bt.err, type = "l", col = "blue")
+legend("topright", legend = c("Random Forest, mtry = 1", "GBM, M = 1 (stumps)"), col = c("black", "blue"), lty=1)
+
+
+# final comparison of test errors
+barplot(height = c(lo.testerr, 
+                   rf.testerr, 
+                   bt.testerr, 
+                   svm.testerr3, 
+                   svm.testerr4), 
+        space = 1, 
+        names.arg = c("Lasso", 
+                      "RF, m=1", 
+                      "GBM, M=1",
+                      "SVM Poly 3",
+                      "SVM Radial"), 
+        main = "Comparison of test errors", 
+        ylab = "number of misclassifications", 
+        col = c("darkolivegreen1", 
+                "darkolivegreen2", 
+                "darkolivegreen3", 
+                "darkolivegreen4",
+                "darkolivegreen"))
+
+
+### questions:
+# - if in random forest the best number of predictor to sample from at each bagging iteration is low, does this mean the 
+#   data are very correlated? how can one get insight into the properties of the data by examining the models that fit it best?
