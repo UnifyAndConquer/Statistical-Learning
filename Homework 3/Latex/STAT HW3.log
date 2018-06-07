@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.1)  25 MAY 2018 18:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.1)  7 JUN 2018 22:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -307,27 +307,37 @@ Package caption Info: End \AtBeginDocument code.
 [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-./STAT HW3.tex:68: Undefined control sequence.
-l.68 ...(\beta - \hat{\beta}_{OLS})^T(\beta - \het
-                                                  {\beta}_{OLS}) + \lambda\s...
+Underfull \hbox (badness 10000) in paragraph at lines 74--80
 
-? 
-./STAT HW3.tex:68: Emergency stop.
-l.68 ...(\beta - \hat{\beta}_{OLS})^T(\beta - \het
-                                                  {\beta}_{OLS}) + \lambda\s...
-End of file on the terminal!
+ []
 
- 
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--100
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--103
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 115--117
+
+ []
+
+[2] [3] (./STAT HW3.aux) ) 
 Here is how much of TeX's memory you used:
- 4876 strings out of 492995
- 73343 string characters out of 6132704
- 148389 words of memory out of 5000000
- 8385 multiletter control sequences out of 15000+600000
+ 4879 strings out of 492995
+ 73375 string characters out of 6132704
+ 151389 words of memory out of 5000000
+ 8386 multiletter control sequences out of 15000+600000
  9335 words of font info for 34 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 42i,10n,40p,298b,219s stack positions out of 5000i,500n,10000p,200000b,80000s
-./STAT HW3.tex:68:  ==> Fatal error occurred, no output PDF file produced!
-12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/
+ 42i,13n,40p,298b,219s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmmi5.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsf
