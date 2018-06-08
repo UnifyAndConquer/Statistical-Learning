@@ -56,7 +56,37 @@ The optimal shrinkage parameter was obtained by cross validation, as shown in fi
 
 \paragraph{Random Forest}
 
+Using tuneRF the optimal number of variables to select was 1. Figure 3 shows the partial dependence plots.
 
+% Figure
+\begin{figure}[h]				%placement (here)
+	\centering
+	\includegraphics[width=8.2cm]{DA2/Plots/RF_partial_dependence.pdf}
+	\caption{}
+\end{figure}
+
+\paragraph{Boosted Trees} 
+
+Four GBM models were tried out having interaction depths of 4,3,2 and 1. The model with interaction depth 1 turned out to have the smallest CV error, which means that stumps seem to be the best choice of base learners. Figure 4 shows a comparison of the CV errors of RF and GBM as a function of the number of trees used in the models. We see that random forests always performs a little better than boosting. The choice of loss for the cross validated error was the average number of misclassifications.
+
+% Figure
+\begin{figure}[h]				%placement (here)
+	\centering
+	\includegraphics[width=16cm]{DA2/Plots/RF_GBM_CVerr_Comparison.pdf}
+	\caption{}
+\end{figure}
+
+\paragraph{SVM}
+
+The optimal value of the cost parameter C (figure 5) and the best degree for the polynomial kernel were both determined using cross-validation. Figure 5 (right side) shows a comparison of the number of misclassifications of all the techniques tried out.
+
+% Figure
+\begin{figure}[h]				%placement (here)
+	\centering
+	\includegraphics[width=6cm]{DA2/Plots/SVM_CVerr_VS_logC.pdf}
+	\includegraphics[width=7cm]{DA2/Plots/Testerr_Comparison.pdf}
+	\caption{}
+\end{figure}
 
 
 \section*{Data Analysis 3}
@@ -65,25 +95,91 @@ The optimal shrinkage parameter was obtained by cross validation, as shown in fi
 % Figure
 \begin{figure}[h]				%placement (here)
 	\centering
-	\includegraphics[width=8.2cm]{DA3/Plots/kmeans_2dplot.pdf}
-	\includegraphics[width=8.2cm]{DA3/Plots/kmeans_3dplot.pdf}
+	\includegraphics[width=6cm]{DA3/Plots/kmeans_2dplot.pdf}
+	\includegraphics[width=6cm]{DA3/Plots/kmeans_3dplot.pdf}
 	\caption{}
 \end{figure}
 
-Clearly, k-means clustering successfully identifies the two classes in the data. They can be more or less separated along the first principal component, as most points of class 1 have negative values of PC1, and most class 2 observations have positive values for PC1. The 3d plot only helps to show that the 3rd principal component doesn't play a role in determining the class.
+Figure 6 shows plots of the first principal components of the data. Clearly, k-means clustering successfully identifies the two classes in the data. They can be more or less separated along the first principal component, as most points of class 1 have negative values of PC1, and most class 2 observations have positive values. The 3d plot shows that the 3rd principal component doesn't play a role in determining the class.
 
 % Figure
 \begin{figure}[h]				%placement (here)
 	\centering
-	\includegraphics[width=8.2cm]{DA3/Plots/HCluster_complete_corr.pdf}
-	\includegraphics[width=8.2cm]{DA3/Plots/HCluster_complete_RF.pdf}
-	\includegraphics[width=8.2cm]{DA3/Plots/HCluster_complete_euclidean.pdf}
+	\includegraphics[width=6cm]{DA3/Plots/HCluster_complete_corr.pdf}
+	\includegraphics[width=6cm]{DA3/Plots/HCluster_complete_RF.pdf}
+	\includegraphics[width=6cm]{DA3/Plots/HCluster_complete_euclidean.pdf}
 	\caption{}
 \end{figure}
 
 \paragraph{Hierarchical Clustering}
 
-Examining the dendrograms in figure 3, it seems that correlation-based clustering doesn't give good insight as to how the classes are separated: the separation that gives two classes appears at the very top of the plot. This might be because the predictors that most influence the outcome (class) are not strongly correlated with each other. If they were, then it would show on this dendrogram as two "tight" clusters. The euclidean distance dendrogram tells a different story: there are clearly four clusters at around height 10, which eventually merge to 2 at about height 15. The appearance of the plot suggests that the data is well described as belonging to two clusters, three clusters or four clusters. The RF-distance dendrogram is more "evenly distributed" across height, it doesn't convince us that there are two classes, just like the correlation-based plot. This means that trees don't really capture the class difference in this dataset. If they did, i.e. if observations of class 1 tended to end up at the same terminal node often with other observations of class 1, it would show up on the plot as if the observations were close.
+Examining the dendrograms in figure 7, it seems that correlation-based clustering doesn't give good insight as to how the classes are separated: the separation that gives two classes appears at the very top of the plot. This might be because the predictors that most influence the outcome (class) are not strongly correlated with each other. If they were, then it would show on this dendrogram as two "tight" clusters. The euclidean distance dendrogram tells a different story: there are clearly four clusters at around height 10, which eventually merge to 2 at about height 15. The appearance of the plot suggests that the data is well described as belonging to two clusters, three clusters or four clusters. The RF-distance dendrogram is more "evenly distributed" across height, it doesn't convince us that there are two classes, just like the correlation-based plot. This means that trees don't really capture the class difference in this dataset. If they did, i.e. if observations of class 1 tended to end up at the same terminal node often with other observations of class 1, it would show up on the plot as if the observations were close.
+
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+\vspace{\baselineskip}
+
+\section*{Theoretical Answers}
+\paragraph{12.1)}
+
+The problem asks to prove that
+
+\begin{equation*}
+\operatorname*{min}_{\beta_0,\beta}\sum_{i=1}^N[1-y_if(x_i)]_+ + \frac{\lambda}{2}||\beta||^2 = \operatorname*{min}_{\beta_0,\beta}\frac{1}{2}||\beta||^2 + C\sum_{i=1}^N \xi_i
+\end{equation*}
+
+$\xi_i$ is the distance by which the point $i$ is on the wrong side of its margin. The margin is represented by 
+
+\begin{align*}
+f(x) & = x^T\beta + \beta_0 = \pm M
+\\
+y_i f(x_i) & = M
+\end{align*}
+
+points that are inside the margin by an amount $\xi_i$ are represented as 
+
+\begin{align*}
+y_i f(x_i) & = M(1- \xi_i) \quad \xi_i \geq 0
+\end{align*}
+
+normalizing as was done in ESL page 418 eq. 12.4, we get
+
+\begin{align*}
+y_i f(x_i) & = 1- \xi_i
+\\
+1-y_if(x_i) & = \xi_i \quad \xi_i \geq 0
+\\
+\xi_i & = (1 - y_if(x_i))^+
+\end{align*}
+
+Choosing $\lambda = \frac{1}{C}$ and multiplying the expression by C (which doesn't affect the equation since we're finding the minimum), the equation is verified.
+
+\paragraph{12.2)}
+
+The problem asks to prove that 
+
+\begin{equation*}
+\operatorname*{min}_{\beta_0,\beta}\sum_{i=1}^N[1-y_if(x_i)]_+ + \frac{\lambda}{2}||\beta||^2 = \operatorname*{min}_{\beta_0,\alpha}\sum_{i=1}^N[1-y_if(x_i)]_+ + \frac{\lambda}{2}\alpha^T\mathbf{K}\alpha
+\end{equation*}
+
+We know from ESL equations 12.10 and 12.20 that 
+\begin{equation*}
+\beta = \sum_{i=1}^N\alpha_iy_ih(x_i)
+\end{equation*}
+
+Writing out the summations, we get
+
+\begin{align*}
+\alpha^T\mathbf{K}\alpha & = \sum_{i=1}^N\sum_{i'=1}^N\alpha_{i'}\mathbf{K}(x_i, x_{i'})\alpha_i
+\\
+\beta^T\beta & = \sum_{i=1}^N\sum_{i'=1}^N\alpha_{i'}\alpha_ih(x_i)h(x_i)y_{i'}y_i
+\\
+& =  \sum_{i=1}^N\sum_{i'=1}^N\alpha_{i'}\alpha_i\mathbf{K}(x_i, x_{i'})y_{i'}y_i
+\end{align*}
+
+we can remove $y_iy_{i'}$ from the second equation since when a point is misclassified (outside the margin), $\alpha_i = 0$ and when it is correctly classified, $y_iy_{i'} = 1$.
+
 
 
 \end{document}
