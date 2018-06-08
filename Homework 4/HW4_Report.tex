@@ -40,11 +40,58 @@ Since we are averaging over 300 simulated samples for both the bagged and non-ba
 E_T(h(T)) \approx \operatorname*{lim}_{B \to \infty} \frac{1}{B}\sum_{b=1}^Bh(T_b)
 \end{equation*} 
 
-which has the same bias as the learner itself. Thus, the difference is due to the variance term. The bagged model's error is reduced most when the bootstrapped learners are least correlated among each other. This happens when there are fewer coefficients in the model being fitted. In a model with a smaller number of coefficients, each coefficient has to account for greater variability in the data. This results in less correlation between coefficients of different learners. An extreme example would be a model with a single nonzero coefficient, fitted on a dataset with many principal components. Such a model would have to account for all the variability of the data with a single predictor, and thus the correlation between two such bootstrapped learners would be directly related to the correlation of the data samples, and so would be very small since the samples are supposedly random. This is the situation where bagging is beneficial, since it reduces this variability in the predictor. In the other extreme, if there were too many predictors in the model, each one would capture a specific part of the variability of the data, and hence would vary less across samples, resulting in a higher correlation among the learners fitted on these samples. If there are more coefficients in the model than needed to capture all the variability in the data (as it happens in the figure on the left after 25 predictors) then eventually the added variance of the useless predictors that capture only noise outweighs the reduction in variance granted by bagging.
+which has the same bias as the learner itself. Thus, the difference is due to the variance term. The bagged model's error is reduced most when the bootstrapped learners are least correlated among each other. This happens when there are fewer coefficients in the model being fitted. In a model with a smaller number of coefficients, each coefficient has to account for greater variability in the data. This results in less correlation between coefficients of different learners. An extreme example would be a model with a single nonzero coefficient, fitted on a dataset with many principal components. Such a model would have to account for all the variability of the data with a single predictor, and thus the correlation between two such bootstrapped learners would be directly related to the correlation of the data samples, and so would be very small since the samples are supposedly random. This is the situation where bagging is beneficial, since it reduces this variability in the predictor. In the other extreme, if there were too many predictors in the model, each one would capture a specific part of the variability of the data, and hence would vary less across samples, resulting in a higher correlation among the learners fitted on these samples. If there are more coefficients in the model than needed to capture the meaningful variability in the data (as it happens in the figure on the left after 25 predictors) then eventually the added variance of the useless predictors that capture only noise outweighs the reduction in variance granted by bagging.
 
 \section*{Data Analysis 2}
+\paragraph{Lasso}
+
+% Figure
+\begin{figure}[h]				%placement (here)
+	\centering
+	\includegraphics[width=8.2cm]{DA2/Plots/Lasso_CVerr_VS_S.pdf}
+	\caption{}
+\end{figure}
+
+The optimal shrinkage parameter was obtained by cross validation, as shown in figure 2 (ignoring the one-standard-deviation rule). Then, predictions were made using this shrinkage value and the predicted values were rounded to integers to produce classifications.
+
+\paragraph{Random Forest}
+
+
+
+
+\section*{Data Analysis 3}
+\paragraph{K-Means clustering}
+
+% Figure
+\begin{figure}[h]				%placement (here)
+	\centering
+	\includegraphics[width=8.2cm]{DA3/Plots/kmeans_2dplot.pdf}
+	\includegraphics[width=8.2cm]{DA3/Plots/kmeans_3dplot.pdf}
+	\caption{}
+\end{figure}
+
+Clearly, k-means clustering successfully identifies the two classes in the data. They can be more or less separated along the first principal component, as most points of class 1 have negative values of PC1, and most class 2 observations have positive values for PC1. The 3d plot only helps to show that the 3rd principal component doesn't play a role in determining the class.
+
+% Figure
+\begin{figure}[h]				%placement (here)
+	\centering
+	\includegraphics[width=8.2cm]{DA3/Plots/HCluster_complete_corr.pdf}
+	\includegraphics[width=8.2cm]{DA3/Plots/HCluster_complete_RF.pdf}
+	\includegraphics[width=8.2cm]{DA3/Plots/HCluster_complete_euclidean.pdf}
+	\caption{}
+\end{figure}
+
+\paragraph{Hierarchical Clustering}
+
+Examining the dendrograms in figure 3, it seems that correlation-based clustering doesn't give good insight as to how the classes are separated: the separation that gives two classes appears at the very top of the plot. This might be because the predictors that most influence the outcome (class) are not strongly correlated with each other. If they were, then it would show on this dendrogram as two "tight" clusters. The euclidean distance dendrogram tells a different story: there are clearly four clusters at around height 10, which eventually merge to 2 at about height 15. The appearance of the plot suggests that the data is well described as belonging to two clusters, three clusters or four clusters. The RF-distance dendrogram is more "evenly distributed" across height, it doesn't convince us that there are two classes, just like the correlation-based plot. This means that trees don't really capture the class difference in this dataset. If they did, i.e. if observations of class 1 tended to end up at the same terminal node often with other observations of class 1, it would show up on the plot as if the observations were close.
 
 
 \end{document}
+
+
+
+
+
+
 
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.1)  7 JUN 2018 22:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.11.1)  8 JUN 2018 21:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -318,30 +318,86 @@ Package pdftex.def Info: DA1/25.pdf used on input line 26.
  [1
 
 {/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./DA1/5
-.pdf> <./DA1/25.pdf>] [2] (./HW4_Report.aux) ) 
+.pdf> <./DA1/25.pdf>] <DA2/Plots/Lasso_CVerr_VS_S.pdf, id=57, 722.7pt x 722.7pt
+>
+File: DA2/Plots/Lasso_CVerr_VS_S.pdf Graphic file (type pdf)
+
+<use DA2/Plots/Lasso_CVerr_VS_S.pdf>
+Package pdftex.def Info: DA2/Plots/Lasso_CVerr_VS_S.pdf used on input line 51.
+(pdftex.def)             Requested size: 233.3125pt x 233.3088pt.
+
+<DA3/Plots/kmeans_2dplot.pdf, id=58, 722.7pt x 722.7pt>
+File: DA3/Plots/kmeans_2dplot.pdf Graphic file (type pdf)
+
+<use DA3/Plots/kmeans_2dplot.pdf>
+Package pdftex.def Info: DA3/Plots/kmeans_2dplot.pdf used on input line 66.
+(pdftex.def)             Requested size: 233.3125pt x 233.3088pt.
+
+<DA3/Plots/kmeans_3dplot.pdf, id=59, 722.7pt x 722.7pt>
+File: DA3/Plots/kmeans_3dplot.pdf Graphic file (type pdf)
+
+<use DA3/Plots/kmeans_3dplot.pdf>
+Package pdftex.def Info: DA3/Plots/kmeans_3dplot.pdf used on input line 67.
+(pdftex.def)             Requested size: 233.3125pt x 233.3088pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[2 <./DA2/Plots/Lasso_CVerr_VS_S.pdf>]
+<DA3/Plots/HCluster_complete_corr.pdf, id=71, 722.7pt x 722.7pt>
+File: DA3/Plots/HCluster_complete_corr.pdf Graphic file (type pdf)
+
+<use DA3/Plots/HCluster_complete_corr.pdf>
+Package pdftex.def Info: DA3/Plots/HCluster_complete_corr.pdf used on input lin
+e 76.
+(pdftex.def)             Requested size: 233.3125pt x 233.3088pt.
+
+<DA3/Plots/HCluster_complete_RF.pdf, id=72, 722.7pt x 722.7pt>
+File: DA3/Plots/HCluster_complete_RF.pdf Graphic file (type pdf)
+
+<use DA3/Plots/HCluster_complete_RF.pdf>
+Package pdftex.def Info: DA3/Plots/HCluster_complete_RF.pdf used on input line 
+77.
+(pdftex.def)             Requested size: 233.3125pt x 233.3088pt.
+
+<DA3/Plots/HCluster_complete_euclidean.pdf, id=73, 722.7pt x 722.7pt>
+File: DA3/Plots/HCluster_complete_euclidean.pdf Graphic file (type pdf)
+
+<use DA3/Plots/HCluster_complete_euclidean.pdf>
+Package pdftex.def Info: DA3/Plots/HCluster_complete_euclidean.pdf used on inpu
+t line 78.
+(pdftex.def)             Requested size: 233.3125pt x 233.3088pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[3 <./DA3/Plots/kmeans_2dplot.pdf> <./DA3/Plots/kmeans_3dplot.pdf>] [4 <./DA3/P
+lots/HCluster_complete_corr.pdf> <./DA3/Plots/HCluster_complete_RF.pdf> <./DA3/
+Plots/HCluster_complete_euclidean.pdf>] (./HW4_Report.aux) ) 
 Here is how much of TeX's memory you used:
- 4890 strings out of 492995
- 73544 string characters out of 6132704
- 143389 words of memory out of 5000000
- 8396 multiletter control sequences out of 15000+600000
+ 4922 strings out of 492995
+ 74593 string characters out of 6132704
+ 144389 words of memory out of 5000000
+ 8420 multiletter control sequences out of 15000+600000
  8716 words of font info for 32 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 42i,6n,40p,1577b,270s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2017/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2017/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2017/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmsy7.pfb>
-Output written on HW4_Report.pdf (2 pages, 134446 bytes).
+ 42i,6n,40p,1584b,270s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive
+/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/
+2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2
+017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/20
+17/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/201
+7/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2017/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2017/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2017/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2017/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2017/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2017/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on HW4_Report.pdf (4 pages, 200289 bytes).
 PDF statistics:
- 93 PDF objects out of 1000 (max. 8388607)
- 70 compressed objects within 1 object stream
+ 146 PDF objects out of 1000 (max. 8388607)
+ 107 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
