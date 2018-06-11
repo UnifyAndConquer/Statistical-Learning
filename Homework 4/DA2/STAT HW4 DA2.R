@@ -243,7 +243,7 @@ svm.testerr4 = sum(svm.pred4 != y.test) # number of misclassifications by svm ra
 #### CV ERROR PLOTS FOR RF AND BT ####
 
 K = 10  # CV folds
-R = 2000  # number of trees to try RF and Boosting on
+R = 20  # number of trees to try RF and Boosting on
 folds = sample(1:K, nrow(x.train), replace = T)
 rf.error = matrix(NA, K, R)
 bt.error = matrix(NA, K, R)
